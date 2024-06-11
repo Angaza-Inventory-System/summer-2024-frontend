@@ -16,21 +16,21 @@ function NavMenu() {
     </BrowserRouter>
   );
 }
+//nav only for easy access to pages created, unless you prefer to type page links manually... replace false below with true in that case
 function NavBar() {
-  const [navOpen, setNav] = useState(false);
+  const [navOpen, setNav] = useState(true);
   const Button = () => (
     <button onClick={() => setNav((navOpen) => !navOpen)} className=""></button>
   );
   return (
     <>
-      {/* temp styling do not change first string unless you want to change layout style- darryl*/}
       <div
         className={[
           "absolute left-0 top-0 flex h-screen w-screen flex-col",
           "bg-slate-400 md:w-[10vw]",
+          navOpen ? "" : "invisible",
         ].join(" ")}
       >
-        {/* change styling of all buttons in nav int NavButton.tsx - darryk*/}
         <NavButton text="aaa" link="/" />
         <NavButton text="Show Devices" link="/display" />
       </div>
