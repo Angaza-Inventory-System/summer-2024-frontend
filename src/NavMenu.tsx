@@ -1,6 +1,4 @@
 import { Outlet, BrowserRouter, Routes, Route } from "react-router-dom";
-import DeviceDisplay from "./components/DeviceDisplay";
-import App from "./components/App";
 import NavButton from "./components/NavButton";
 import { useState } from "react";
 
@@ -19,9 +17,6 @@ function NavMenu() {
 //nav only for easy access to pages created, unless you prefer to type page links manually... replace false below with true in that case
 function NavBar() {
   const [navOpen, setNav] = useState(true);
-  const Button = () => (
-    <button onClick={() => setNav((navOpen) => !navOpen)} className=""></button>
-  );
   return (
     <>
       <div

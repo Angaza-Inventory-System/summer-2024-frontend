@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./globals.css";
-import NavMenu from "./NavMenu";
+import Page from "./components/Page";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <NavMenu />
+    <Page />
   </React.StrictMode>,
 );
