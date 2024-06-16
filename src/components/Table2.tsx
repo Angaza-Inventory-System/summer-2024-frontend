@@ -74,14 +74,14 @@ function Table() {
     
   ]; */
   return (
-    <div className="overflow-x-auto shadow-md sm:rounded-lg">
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
       <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
-        <thead className="users-table bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+        <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
           {table.getHeaderGroups().map((headerGroup) => (
             <tr key={headerGroup.id}>
               {headerGroup.headers.map((header) => (
-                <th key={header.id} className="users-table-cell">
-                  <div>
+                <th key={header.id} className="px-6 py-3">
+                  <div class="flex items-center">
                     {flexRender(
                       header.column.columnDef.header,
                       header.getContext(),
@@ -97,10 +97,10 @@ function Table() {
             <tr
               key={row.id}
               className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-              //onClick={row.getToggleSelectedHandler()}
+              onClick={row.getToggleSelectedHandler()}
             >
               {row.getVisibleCells().map((cell) => (
-                <td key={cell.id} className="users-table-cell">
+                <td key={cell.id} className="px-6 py-4">
                   {flexRender(cell.column.columnDef.cell, cell.getContext())}
                 </td>
               ))}
