@@ -1,12 +1,26 @@
-import { Dropdown, DropdownItem } from "flowbite-react";
-import CheckboxItem from "./CheckboxItem";
+import { Dropdown } from "flowbite-react";
+import DropItem from "./DropItem";
+import { ColumnVisibilityState } from "./ColumnVisibilityState";
 
-function DropdownCheckbox() {
+interface Props {
+  toggleColumnVisibility: (columnName: keyof ColumnVisibilityState) => void;
+}
+
+function DropdownCheckbox({ toggleColumnVisibility }: Props) {
   return (
-    <Dropdown label="Dropdown button" dismissOnClick={false}>
-      <DropdownItem as={CheckboxItem} href="#">
-        Home
-      </DropdownItem>
+    <Dropdown label="Hide Columns" dismissOnClick={false}>
+      <DropItem
+        text="ID"
+        checkbox={true}
+        col="id"
+        toggleColumnVisibility={toggleColumnVisibility}
+      />
+      <DropItem
+        text="Name"
+        checkbox={true}
+        col="name"
+        toggleColumnVisibility={toggleColumnVisibility}
+      />
     </Dropdown>
   );
 }
