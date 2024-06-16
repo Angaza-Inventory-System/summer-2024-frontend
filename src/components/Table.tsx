@@ -14,10 +14,10 @@ interface TableProps {
 
 function Table({ data, columnVisibility }: TableProps) {
   return (
-    <div className="overflow-x-auto">
-      <table className="min-w-full border border-gray-200 bg-white">
-        <thead>
-          <tr className="bg-gray-100 text-left">
+    <div className="overflow-x-auto shadow-md sm:rounded-lg">
+      <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
+        <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+          <tr className="">
             {columnVisibility.id && (
               <th className="border-b border-gray-200 px-2 py-2">ID</th>
             )}
@@ -40,7 +40,10 @@ function Table({ data, columnVisibility }: TableProps) {
         </thead>
         <tbody>
           {data.map((item) => (
-            <tr key={item.id}>
+            <tr
+              className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
+              key={item.id}
+            >
               {columnVisibility.id && (
                 <td className="border-b border-gray-200 px-2 py-2">
                   {item.id}

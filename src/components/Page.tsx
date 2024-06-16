@@ -1,7 +1,7 @@
 import { useState } from "react";
 import DropdownCheckbox from "./DropdownCheckbox";
 import DropdownMenu from "./DropdownMenu";
-import Table from "./Table";
+import Table from "./Table2";
 import { ColumnVisibilityState } from "./ColumnVisibilityState";
 
 function Page() {
@@ -33,7 +33,7 @@ function Page() {
         <DropdownMenu />
         <DropdownCheckbox toggleColumnVisibility={toggleColumnVisibility} />
       </div>
-      <Table data={data} columnVisibility={columnVisibility} />
+      <Table />
       <div className="flex flex-col"></div>
     </div>
   );
