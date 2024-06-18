@@ -1,85 +1,165 @@
-import { ColumnVisibilityState } from "./ColumnVisibilityState";
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import { useState } from "react";
+import dataJSON from "./mockdata.json";
+import { createColumnHelper } from "@tanstack/react-table";
+import Checkbox from "./Checkbox";
+import { Dropdown } from "flowbite-react";
 
-interface TableProps {
-  data: Array<{
-    id: number;
-    name: string;
-    age: number;
-    id2: number;
-    name2: string;
-    age2: number;
-  }>;
-  columnVisibility: ColumnVisibilityState;
-}
+export type Row = {
+  id: string;
+  first_name: string;
+  last_name: string;
+};
 
-function Table({ data, columnVisibility }: TableProps) {
+export type VisibilityState = Record<string, boolean>;
+
+export type VisibilityTableState = {
+  columnVisibility: VisibilityState;
+};
+
+export type RowSelectionState = Record<string, boolean>;
+
+export type RowSelectionTableState = {
+  rowSelection: RowSelectionState;
+};
+
+export type ColumnOrderTableState = {
+  columnOrder: ColumnOrderState;
+};
+export type ColumnOrderState = string[];
+
+function Table() {
+  const [rows, setRows] = useState(dataJSON);
+  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
+  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+    id: true,
+    first_name: true,
+    last_name: true,
+  });
+  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([
+    "select",
+    "id",
+    "last_name",
+    "first_name",
+  ]);
+  const columnHelper = createColumnHelper<Row>();
+  const colDef = [
+    {
+      id: "select",
+      header: ({ table }) => (
+        <Checkbox
+          {...{
+            checked: table.getIsAllRowsSelected(),
+            indeterminate: table.getIsSomeRowsSelected(),
+            onChange: table.getToggleAllRowsSelectedHandler(),
+          }}
+        />
+      ),
+      cell: ({ row }) => (
+        <Checkbox
+          {...{
+            checked: row.getIsSelected(),
+            disabled: !row.getCanSelect(),
+            indeterminate: row.getIsSomeSelected(),
+            onChange: row.getToggleSelectedHandler(),
+          }}
+        />
+      ),
+    },
+    columnHelper.accessor("id", {
+      header: "ID",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("first_name", {
+      header: "First Name",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("last_name", {
+      header: "Last Name",
+      cell: (info) => info.getValue(),
+    }),
+  ];
+  const table = useReactTable({
+    data: rows,
+    columns: colDef,
+    getCoreRowModel: getCoreRowModel(),
+    state: {
+      rowSelection,
+      columnOrder,
+      columnVisibility,
+    },
+    onColumnVisibilityChange: setColumnVisibility,
+    onRowSelectionChange: setRowSelection,
+    onColumnOrderChange: setColumnOrder,
+    enableRowSelection: true,
+  });
   return (
-    <div className="overflow-x-auto shadow-md sm:rounded-lg">
-      <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
-        <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
-          <tr className="">
-            {columnVisibility.id && (
-              <th className="border-b border-gray-200 px-2 py-2">ID</th>
-            )}
-            {columnVisibility.name && (
-              <th className="border-b border-gray-200 px-2 py-2">Name</th>
-            )}
-            {columnVisibility.age && (
-              <th className="border-b border-gray-200 px-2 py-2">Age</th>
-            )}
-            {columnVisibility.id2 && (
-              <th className="border-b border-gray-200 px-2 py-2">ID2</th>
-            )}
-            {columnVisibility.name2 && (
-              <th className="border-b border-gray-200 px-2 py-2">Name2</th>
-            )}
-            {columnVisibility.age2 && (
-              <th className="border-b border-gray-200 px-2 py-2">Age2</th>
-            )}
-          </tr>
-        </thead>
-        <tbody>
-          {data.map((item) => (
-            <tr
-              className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
-              key={item.id}
+    <div>
+      <Dropdown label="Hide Columns" dismissOnClick={false} size="sm">
+        {table.getAllLeafColumns().map((column) => {
+          return (
+            <div
+              key={column.id}
+              className="flex items-center hover:bg-slate-200"
             >
-              {columnVisibility.id && (
-                <td className="border-b border-gray-200 px-2 py-2">
-                  {item.id}
-                </td>
-              )}
-              {columnVisibility.name && (
-                <td className="border-b border-gray-200 px-2 py-2">
-                  {item.name}
-                </td>
-              )}
-              {columnVisibility.age && (
-                <td className="border-b border-gray-200 px-2 py-2">
-                  {item.age}
-                </td>
-              )}
-              {columnVisibility.id2 && (
-                <td className="border-b border-gray-200 px-2 py-2">
-                  {item.id2}
-                </td>
-              )}
-              {columnVisibility.name2 && (
-                <td className="border-b border-gray-200 px-2 py-2">
-                  {item.name2}
-                </td>
-              )}
-              {columnVisibility.age2 && (
-                <td className="border-b border-gray-200 px-2 py-2">
-                  {item.age2}
-                </td>
-              )}
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              <label>
+                <input
+                  {...{
+                    type: "checkbox",
+                    checked: column.getIsVisible(),
+                    onChange: column.getToggleVisibilityHandler(),
+                    className:
+                      "h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700",
+                  }}
+                />
+                <label className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                  {column.columnDef.header}
+                </label>
+              </label>
+            </div>
+          );
+        })}
+      </Dropdown>
+      <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
+        <table className="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right">
+          <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id}>
+                {headerGroup.headers.map((header) => (
+                  <th key={header.id} className="px-6 py-3">
+                    <div className="flex items-center">
+                      {flexRender(
+                        header.column.columnDef.header,
+                        header.getContext(),
+                      )}
+                    </div>
+                  </th>
+                ))}
+              </tr>
+            ))}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr
+                key={row.id}
+                className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
+                onClick={row.getToggleSelectedHandler()}
+              >
+                {row.getVisibleCells().map((cell) => (
+                  <td key={cell.id} className="px-6 py-4">
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
-
 export default Table;
