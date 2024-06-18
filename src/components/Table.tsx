@@ -2,12 +2,30 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import { useState } from "react";
 import dataJSON from "./mockdata.json";
 import { createColumnHelper } from "@tanstack/react-table";
 import Checkbox from "./Checkbox";
 import { Dropdown } from "flowbite-react";
+import { PaginationButton } from "./PaginationButton";
+
+export type ColumnSizingTableState = {
+  columnSizing: ColumnSizing;
+  columnSizingInfo: ColumnSizingInfoState;
+};
+
+export type ColumnSizing = Record<string, number>;
+
+export type ColumnSizingInfoState = {
+  startOffset: null | number;
+  startSize: null | number;
+  deltaOffset: null | number;
+  deltaPercentage: null | number;
+  isResizingColumn: false | string;
+  columnSizingStart: [string, number][];
+};
 
 function Table() {
   const [rows, setRows] = useState(dataJSON);
@@ -62,14 +80,26 @@ function Table() {
       cell: (info) => info.getValue(),
     }),
   ];
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 16, //subject to change after asking backend
+  });
+
   const table = useReactTable({
     data: rows,
     columns: colDef,
+    columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    manualPagination: true,
+    onPaginationChange: setPagination,
+    autoResetPageIndex: false, //turn off auto reset of pageIndex
+    rowCount: 16, //hard coded to maintain order
     state: {
       rowSelection,
       columnOrder,
       columnVisibility,
+      pagination,
     },
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
@@ -139,6 +169,7 @@ function Table() {
           </tbody>
         </table>
       </div>
+      <PaginationButton />
     </div>
   );
 }

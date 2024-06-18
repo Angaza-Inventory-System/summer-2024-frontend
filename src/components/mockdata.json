@@ -14,9 +14,5 @@
   { "id": 13, "first_name": "Clo", "last_name": "Raffin" },
   { "id": 14, "first_name": "Meriel", "last_name": "Genery" },
   { "id": 15, "first_name": "Clare", "last_name": "Radeliffe" },
-  { "id": 16, "first_name": "Marje", "last_name": "Keston" },
-  { "id": 17, "first_name": "Timmy", "last_name": "Toleman" },
-  { "id": 18, "first_name": "Doyle", "last_name": "Sellner" },
-  { "id": 19, "first_name": "Hansiain", "last_name": "Abbet" },
-  { "id": 20, "first_name": "Min", "last_name": "Habbershon" }
+  { "id": 16, "first_name": "Marje", "last_name": "Keston" }
 ]
