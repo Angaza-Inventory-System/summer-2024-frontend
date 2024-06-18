@@ -9,44 +9,23 @@ import { createColumnHelper } from "@tanstack/react-table";
 import Checkbox from "./Checkbox";
 import { Dropdown } from "flowbite-react";
 
-export type Row = {
-  id: string;
-  first_name: string;
-  last_name: string;
-};
-
-export type VisibilityState = Record<string, boolean>;
-
-export type VisibilityTableState = {
-  columnVisibility: VisibilityState;
-};
-
-export type RowSelectionState = Record<string, boolean>;
-
-export type RowSelectionTableState = {
-  rowSelection: RowSelectionState;
-};
-
-export type ColumnOrderTableState = {
-  columnOrder: ColumnOrderState;
-};
-export type ColumnOrderState = string[];
-
 function Table() {
   const [rows, setRows] = useState(dataJSON);
-  const [rowSelection, setRowSelection] = useState<RowSelectionState>({});
-  const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({
+  const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
+  const [columnVisibility, setColumnVisibility] = useState<
+    Record<string, boolean>
+  >({
     id: true,
     first_name: true,
     last_name: true,
   });
-  const [columnOrder, setColumnOrder] = useState<ColumnOrderState>([
+  const [columnOrder, setColumnOrder] = useState<string[]>([
     "select",
     "id",
-    "last_name",
     "first_name",
+    "last_name",
   ]);
-  const columnHelper = createColumnHelper<Row>();
+  const columnHelper = createColumnHelper();
   const colDef = [
     {
       id: "select",
@@ -101,6 +80,7 @@ function Table() {
     <div>
       <Dropdown label="Hide Columns" dismissOnClick={false} size="sm">
         {table.getAllLeafColumns().map((column) => {
+          if (column.id == "select") return;
           return (
             <div
               key={column.id}
