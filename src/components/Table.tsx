@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -111,33 +111,97 @@ function Table() {
   }, [table.getState().columnSizingInfo, table.getState().columnSizing]);
 
   return (
-    <div className="w-screen p-2">
-      <div className="pb-3">
-        <Dropdown label="Hide Columns" dismissOnClick={false} size="sm">
-          {table.getAllLeafColumns().map((column) => {
-            if (column.id === "select") return null;
-            return (
-              <div
-                key={column.id}
-                className="flex items-center hover:bg-slate-200"
+    <div className="w-full p-2">
+      <div className="grid w-full grid-cols-2 pb-3">
+        <div className="h-full">
+          <Dropdown
+            label="Columns"
+            dismissOnClick={false}
+            size="sm"
+            theme={{ floating: { target: "h-10" } }}
+          >
+            {table.getAllLeafColumns().map((column) => {
+              if (column.id === "select") return null;
+              return (
+                <div
+                  key={column.id}
+                  className="flex items-center hover:bg-slate-200"
+                >
+                  <label className="flex items-center">
+                    <input
+                      type="checkbox"
+                      checked={column.getIsVisible()}
+                      onChange={column.getToggleVisibilityHandler()}
+                      className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
+                    />
+                    <span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                      {typeof column.columnDef.header === "function"
+                        ? flexRender(column.columnDef.header, { column })
+                        : column.columnDef.header}
+                    </span>
+                  </label>
+                </div>
+              );
+            })}
+          </Dropdown>
+        </div>
+        <div className="flex h-full justify-self-end">
+          <Dropdown
+            label="Filter"
+            dismissOnClick={true}
+            theme={{ floating: { target: "h-10" } }}
+          >
+            {table.getAllLeafColumns().map((column) => {
+              if (column.id === "select") return null;
+              return (
+                <div
+                  key={column.id}
+                  className="flex items-center hover:bg-slate-200"
+                >
+                  <label className="flex items-center">
+                    <input
+                      name="filter"
+                      type="radio"
+                      className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                    />
+                    <span className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                      {typeof column.columnDef.header === "function"
+                        ? flexRender(column.columnDef.header, { column })
+                        : column.columnDef.header}
+                    </span>
+                  </label>
+                </div>
+              );
+            })}
+          </Dropdown>
+          <div className="relative h-full pl-2">
+            <input
+              type="text"
+              id="table-search"
+              className="block h-10 w-60 rounded-s-lg border border-gray-300 bg-gray-50 ps-8 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+              placeholder="Search for items"
+            />
+          </div>
+          <div className="flex h-10 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <div className="flex items-center">
+              <svg
+                className="h-4 w-4 text-gray-500 dark:text-gray-400"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
               >
-                <label className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={column.getIsVisible()}
-                    onChange={column.getToggleVisibilityHandler()}
-                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
-                  />
-                  <span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                    {typeof column.columnDef.header === "function"
-                      ? flexRender(column.columnDef.header, { column })
-                      : column.columnDef.header}
-                  </span>
-                </label>
-              </div>
-            );
-          })}
-        </Dropdown>
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
       <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
         <div
@@ -163,7 +227,7 @@ function Table() {
                       onDoubleClick={() => header.column.resetSize()}
                       onMouseDown={header.getResizeHandler()}
                       onTouchStart={header.getResizeHandler()}
-                      className="absolute right-0 top-0 h-full w-1 cursor-col-resize select-none bg-blue-100 hover:bg-blue-500"
+                      className={`absolute right-0 top-0 h-full w-1 cursor-col-resize select-none bg-blue-100 ${header.id == "select" ? "" : "hover:bg-blue-500"}`}
                     />
                   </div>
                 ))}
@@ -193,7 +257,19 @@ function Table() {
         </div>
       </div>
       <div className="grid w-full grid-cols-2 pt-3">
-        <div></div>
+        <div className="flex">
+          <div className="flex h-8 items-center justify-center rounded-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            Prnt
+          </div>
+          <div className="flex pl-2">
+            <div className="flex h-8 items-center justify-center rounded-s-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+              +
+            </div>
+            <div className="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+              -
+            </div>
+          </div>
+        </div>
         <div className="justify-self-end">
           <PaginationButton
             table={table}
