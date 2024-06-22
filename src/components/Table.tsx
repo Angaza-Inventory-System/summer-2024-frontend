@@ -61,6 +61,21 @@ function Table() {
         />
       ),
     },
+    {
+      id: "details",
+      size: 52,
+      enableResizing: false,
+      header: "Details",
+      cell: ({ row }) => (
+        <button
+          type="button"
+          onClick={() => {}}
+          className="flex h-8 items-center justify-center rounded-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+        >
+          ...
+        </button>
+      ),
+    },
     columnHelper.accessor("id", {
       minSize: 100,
       header: "ID",
@@ -121,7 +136,8 @@ function Table() {
             theme={{ floating: { target: "h-10" } }}
           >
             {table.getAllLeafColumns().map((column) => {
-              if (column.id === "select") return null;
+              if (column.id === "select" || column.id === "details")
+                return null;
               return (
                 <div
                   key={column.id}
@@ -152,7 +168,8 @@ function Table() {
             theme={{ floating: { target: "h-10" } }}
           >
             {table.getAllLeafColumns().map((column) => {
-              if (column.id === "select") return null;
+              if (column.id === "select" || column.id === "details")
+                return null;
               return (
                 <div
                   key={column.id}
@@ -258,16 +275,25 @@ function Table() {
       </div>
       <div className="grid w-full grid-cols-2 pt-3">
         <div className="flex">
-          <div className="flex h-8 items-center justify-center rounded-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+          <button
+            type="button"
+            className="flex h-8 items-center justify-center rounded-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          >
             Prnt
-          </div>
+          </button>
           <div className="flex pl-2">
-            <div className="flex h-8 items-center justify-center rounded-s-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            <button
+              type="button"
+              className="flex h-8 items-center justify-center rounded-s-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
               +
-            </div>
-            <div className="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+            </button>
+            <button
+              type="button"
+              className="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+            >
               -
-            </div>
+            </button>
           </div>
         </div>
         <div className="justify-self-end">
