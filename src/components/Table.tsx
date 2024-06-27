@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import {
   flexRender,
   getCoreRowModel,
@@ -10,11 +10,15 @@ import {
 import Checkbox from "./Checkbox";
 import { Dropdown } from "flowbite-react";
 import { PaginationButton } from "./PaginationButton";
-import dataJSON from "./mockdata.json";
 import { createColumnHelper } from "@tanstack/react-table";
 
 function Table() {
-  const [rows, setRows] = useState(dataJSON);
+  const [rows, setRows] = useState([]);
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((json) => setRows(json));
+  }, []);
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
   const [columnVisibility, setColumnVisibility] = useState<
     Record<string, boolean>
@@ -26,8 +30,10 @@ function Table() {
   const [columnOrder, setColumnOrder] = useState<string[]>([
     "select",
     "id",
-    "first_name",
-    "last_name",
+    "name",
+    "email",
+    "phone",
+    "details",
   ]);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -39,7 +45,7 @@ function Table() {
   const colDef: ColumnDef<any>[] = [
     {
       id: "select",
-      size: 52,
+      size: 30,
       enableResizing: false,
       header: ({ table }) => (
         <Checkbox
@@ -63,8 +69,7 @@ function Table() {
     },
     {
       id: "details",
-      size: 52,
-      enableResizing: false,
+      size: 62,
       header: "Details",
       cell: ({ row }) => (
         <button
@@ -77,23 +82,28 @@ function Table() {
       ),
     },
     columnHelper.accessor("id", {
-      minSize: 100,
       header: "ID",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("first_name", {
-      minSize: 150,
-      header: "First Name",
+    columnHelper.accessor("name", {
+      header: "Name",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("last_name", {
-      minSize: 150,
-      header: "Last Name",
+    columnHelper.accessor("email", {
+      header: "Email",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("phone", {
+      header: "Phone",
       cell: (info) => info.getValue(),
     }),
   ];
 
   const table = useReactTable({
+    defaultColumn: {
+      size: 200,
+      minSize: 66,
+    },
     data: rows,
     columns: colDef,
     columnResizeMode: "onChange",
@@ -115,52 +125,47 @@ function Table() {
     enableRowSelection: true,
   });
 
-  const columnSizeVars = useMemo(() => {
-    const headers = table.getFlatHeaders();
-    const colSizes: { [key: string]: number } = {};
-    headers.forEach((header) => {
-      colSizes[`--header-${header.id}-size`] = header.getSize();
-      colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
-    });
-    return colSizes;
-  }, [table.getState().columnSizingInfo, table.getState().columnSizing]);
-
+  const headers = table.getFlatHeaders();
+  const colSizes: { [key: string]: number } = {};
+  for (let i = 0; i < headers.length; i++) {
+    const header = headers[i]!;
+    colSizes[`--header-${header.id}-size`] = header.getSize();
+    colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
+  }
+  //document.documentElement.classList.add("dark");
   return (
     <div className="w-full p-2">
       <div className="grid w-full grid-cols-2 pb-3">
-        <div className="h-full">
-          <Dropdown
-            label="Columns"
-            dismissOnClick={false}
-            size="sm"
-            theme={{ floating: { target: "h-10" } }}
-          >
-            {table.getAllLeafColumns().map((column) => {
-              if (column.id === "select" || column.id === "details")
-                return null;
-              return (
-                <div
-                  key={column.id}
-                  className="flex items-center hover:bg-slate-200"
-                >
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={column.getIsVisible()}
-                      onChange={column.getToggleVisibilityHandler()}
-                      className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                      {typeof column.columnDef.header === "function"
-                        ? flexRender(column.columnDef.header, { column })
-                        : column.columnDef.header}
-                    </span>
-                  </label>
-                </div>
-              );
-            })}
-          </Dropdown>
-        </div>
+        <Dropdown
+          label="Columns"
+          dismissOnClick={false}
+          size="sm"
+          theme={{ floating: { target: "h-10 w-[100px]" } }}
+        >
+          {table.getAllLeafColumns().map((column) => {
+            if (column.id === "select" || column.id === "details") return null;
+            return (
+              <div
+                key={column.id}
+                className="flex items-center hover:bg-slate-200"
+              >
+                <label className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={column.getIsVisible()}
+                    onChange={column.getToggleVisibilityHandler()}
+                    className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
+                  />
+                  <span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    {typeof column.columnDef.header === "function"
+                      ? flexRender(column.columnDef.header, { column })
+                      : column.columnDef.header}
+                  </span>
+                </label>
+              </div>
+            );
+          })}
+        </Dropdown>
         <div className="flex h-full justify-self-end">
           <Dropdown
             label="Filter"
@@ -221,17 +226,17 @@ function Table() {
         </div>
       </div>
       <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
-        <div
+        <table
           className="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right"
-          style={{ ...columnSizeVars }}
+          style={{ ...colSizes, width: table.getTotalSize() }}
         >
-          <div className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
+          <thead className="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400">
             {table.getHeaderGroups().map((headerGroup) => (
-              <div key={headerGroup.id}>
+              <tr key={headerGroup.id}>
                 {headerGroup.headers.map((header) => (
-                  <div
+                  <th
                     key={header.id}
-                    className="relative table-cell bg-gray-50 px-6 py-3 text-left text-xs font-medium uppercase tracking-wider text-gray-700 dark:bg-gray-700 dark:text-gray-400"
+                    className="relative bg-gray-50 px-6 py-3 text-gray-700 dark:bg-gray-700 dark:text-gray-400"
                     style={{
                       width: `calc(var(--header-${header.id}-size) * 1px)`,
                     }}
@@ -244,34 +249,34 @@ function Table() {
                       onDoubleClick={() => header.column.resetSize()}
                       onMouseDown={header.getResizeHandler()}
                       onTouchStart={header.getResizeHandler()}
-                      className={`absolute right-0 top-0 h-full w-1 cursor-col-resize select-none bg-blue-100 ${header.id == "select" ? "" : "hover:bg-blue-500"}`}
+                      className={`absolute right-0 top-0 h-full w-1 cursor-col-resize select-none bg-blue-100 dark:bg-blue-900 ${header.id == "select" ? "" : "hover:bg-blue-300 dark:hover:bg-blue-800"}`}
                     />
-                  </div>
+                  </th>
                 ))}
-              </div>
+              </tr>
             ))}
-          </div>
-          <div>
+          </thead>
+          <tbody>
             {table.getRowModel().rows.map((row) => (
-              <div
+              <tr
                 key={row.id}
-                className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
+                className="bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
               >
                 {row.getVisibleCells().map((cell) => (
-                  <div
+                  <td
                     key={cell.id}
-                    className="table-cell px-6 py-4"
+                    className="px-6 py-4"
                     style={{
                       width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
                     }}
                   >
                     {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                  </div>
+                  </td>
                 ))}
-              </div>
+              </tr>
             ))}
-          </div>
-        </div>
+          </tbody>
+        </table>
       </div>
       <div className="grid w-full grid-cols-2 pt-3">
         <div className="flex">
