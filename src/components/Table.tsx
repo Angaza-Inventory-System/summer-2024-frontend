@@ -15,7 +15,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 function Table() {
   const [rows, setRows] = useState([]);
   useEffect(() => {
-    fetch("https://jsonplaceholder.typicode.com/users")
+    fetch("http://127.0.0.1:8000/devices/warehouses/")
       .then((response) => response.json())
       .then((json) => setRows(json));
   }, []);
