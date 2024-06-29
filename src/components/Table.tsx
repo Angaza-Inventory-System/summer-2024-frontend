@@ -14,6 +14,28 @@ import { createColumnHelper } from "@tanstack/react-table";
 
 function Table() {
   const [rows, setRows] = useState([]);
+  var num = 0;
+  const add = () => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        warehouse_number: num,
+        name: "Warehouse 1",
+        country: "Country A",
+        city: "City X",
+        postal_code: "12345",
+        phone: "+1234567812",
+      }),
+    };
+    fetch("http://127.0.0.1:8000/devices/warehouses/", requestOptions).then(
+      (response) => response.json(),
+    );
+    num++;
+  };
+  useEffect(() => {
+    add();
+  }, []);
   useEffect(() => {
     fetch("http://127.0.0.1:8000/devices/warehouses/")
       .then((response) => response.json())
@@ -23,16 +45,13 @@ function Table() {
   const [columnVisibility, setColumnVisibility] = useState<
     Record<string, boolean>
   >({
-    id: true,
-    first_name: true,
-    last_name: true,
+    type: false,
   });
   const [columnOrder, setColumnOrder] = useState<string[]>([
     "select",
-    "id",
-    "name",
-    "email",
-    "phone",
+    "warehouse_number",
+    "country",
+    "city",
     "details",
   ]);
   const [pagination, setPagination] = useState({
@@ -81,20 +100,16 @@ function Table() {
         </button>
       ),
     },
-    columnHelper.accessor("id", {
+    columnHelper.accessor("warehouse_number", {
       header: "ID",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("name", {
-      header: "Name",
+    columnHelper.accessor("country", {
+      header: "Country",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("email", {
-      header: "Email",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("phone", {
-      header: "Phone",
+    columnHelper.accessor("city", {
+      header: "City",
       cell: (info) => info.getValue(),
     }),
   ];
@@ -289,6 +304,7 @@ function Table() {
           <div className="flex pl-2">
             <button
               type="button"
+              onClick={add}
               className="flex h-8 items-center justify-center rounded-s-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
             >
               +
