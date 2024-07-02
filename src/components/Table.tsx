@@ -14,46 +14,36 @@ import { createColumnHelper } from "@tanstack/react-table";
 
 function Table() {
   const [rows, setRows] = useState([]);
-  var num = 0;
+  var num = 17;
   const add = () => {
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        warehouse_number: num,
-        name: "Warehouse 1",
-        country: "Country A",
-        city: "City X",
-        postal_code: "12345",
-        phone: "+1234567812",
-      }),
+      body: JSON.stringify({ something }),
     };
-    fetch("http://127.0.0.1:8000/devices/warehouses/", requestOptions).then(
+    fetch("http://127.0.0.1:8000/devices/devices/", requestOptions).then(
       (response) => response.json(),
     );
     num++;
   };
+  const get = () => {
+    fetch("http://127.0.0.1:8000/devices/devices?page=2&page_size=2")
+      .then((response) => response.json())
+      .then((json) => setRows(json.results));
+  };
   useEffect(() => {
-    add();
+    //add();
   }, []);
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/devices/warehouses/")
-      .then((response) => response.json())
-      .then((json) => setRows(json));
+    get();
   }, []);
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
   const [columnVisibility, setColumnVisibility] = useState<
     Record<string, boolean>
   >({
-    type: false,
+    a: false,
   });
-  const [columnOrder, setColumnOrder] = useState<string[]>([
-    "select",
-    "warehouse_number",
-    "country",
-    "city",
-    "details",
-  ]);
+  const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const [pagination, setPagination] = useState({
     pageIndex: 0,
     pageSize: 16,
@@ -86,6 +76,22 @@ function Table() {
         />
       ),
     },
+    columnHelper.accessor("device_id", {
+      header: "ID",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("type", {
+      header: "Type",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("make", {
+      header: "Make",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("model", {
+      header: "Model",
+      cell: (info) => info.getValue(),
+    }),
     {
       id: "details",
       size: 62,
@@ -100,18 +106,6 @@ function Table() {
         </button>
       ),
     },
-    columnHelper.accessor("warehouse_number", {
-      header: "ID",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("country", {
-      header: "Country",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("city", {
-      header: "City",
-      cell: (info) => info.getValue(),
-    }),
   ];
 
   const table = useReactTable({
