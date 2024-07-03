@@ -1,6 +1,6 @@
 interface Props {
   text: string;
-  setValue: React.FormEvent;
+  setValue: Dispatch<SetStateAction<string>>;
 }
 
 const Field = ({ text, setValue }: Props) => {
@@ -10,7 +10,7 @@ const Field = ({ text, setValue }: Props) => {
       <input
         type="text"
         className="mb-3 rounded-md border-none"
-        onChange={setValue}
+        onChange={(e) => setValue(e.target.value)}
         value={text}
       />
     </>
