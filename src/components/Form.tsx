@@ -7,29 +7,29 @@ const Form = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        device_id: ,
-        type: ,
-        make: ,
-        model: ,
-        serial_number: ,
-        mac_id: ,
-        year_of_manufacture: ,
-        shipment_date: ,
-        date_received: ,
-        received_by: , 
-        physical_condition: ,
-        specifications: ,
-        operating_system: ,
-        accessories: ,
-        donor: , // Assuming 1 is the ID of an existing Donor
-        date_of_donation: ,
-        value: ,
-        location: ,
-        assigned_user: , 
-        status: ,
-        distributor: ,
-        warranty_service_info: ,
-        notes: "Handle with care.",
+        device_id: {id},
+        type: {type},
+        make: {make},
+        model: {model},
+        serial_number: {serialNumber},
+        mac_id: {macId},
+        year_of_manufacture: {manufacture},
+        shipment_date: {shipmentDate},
+        date_received: {dateReceived},
+        received_by: {receivedBy}, 
+        physical_condition: {physicalCondition},
+        specifications: {specifications},
+        operating_system: {operatingSystem},
+        accessories: {accessories},
+        donor: {donorID},
+        date_of_donation: {dateOfDonation},
+        value: {value},
+        location: {location},
+        assigned_user: {assignedUser}, 
+        status: {status},
+        distributor: {distributor},
+        warranty_service_info: {warrantyServiceInfo},
+        notes: {notes},
       }),
     };
     fetch("http://127.0.0.1:8000/devices/devices/", requestOptions).then(
@@ -48,50 +48,50 @@ const Form = () => {
   const [manufacture, setManufacture] = useState("");
   const [shipmentDate, setShipmentDate] = useState("");
   const [dateReceived, setDateReceived] = useState("");
-  const [recievedBy, setRecievedBy] = useState("");
+  const [receivedBy, setReceivedBy] = useState("");
   const [physicalCondition, setPhysicalCondition] = useState("");
   const [specifications, setSpecifications] = useState("");
   const [operatingSystem, setOperatingSystem] = useState("");
-  const [operatingS,] = useState("");
+  const [accessories, setAccessories] = useState("");
   const [donorID, setDonorID] = useState("");
-  const [,] = useState("");
-  const [,] = useState("");
-  const [,] = useState("");
-  const [,] = useState("");
-  const [,] = useState("");
-  const [,] = useState("");
-  const [,] = useState("");
-  
+  const [dateOfDonation, setDateOfDonation] = useState("");
+  const [value, setValue] = useState("");
+  const [location, setLocation] = useState("");
+  const [assignedUser, setAssignedUser] = useState("");
+  const [status, setStatus] = useState("");
+  const [distributor, setDistributor] = useState("");
+  const [warrantyServiceInfo, setWarrantyServiceInfo] = useState("");
+  const [notes, setNotes] = useState("");
 
   return (
     <>
       <div className="flex w-screen justify-center">
         <div className="mx-auto' absolute h-screen w-1/4">
-          <form className="mx-auto w-full max-w-sm" onSubmit={() => {}}>
+          <form className="mx-auto w-full max-w-sm">
             <div className="flex flex-col pt-10">
               <Field text="Device ID" setValue={setId} />
               <Field text="Type" setValue={setType} />
               <Field text="Make" setValue={setMake} />
-              <Field text="Model" setValue={() => {}} />
-              <Field text="Serial Number" setValue={() => {}} />
-              <Field text="Mac ID" setValue={() => {}} />
-              <Field text="Year Of Manufacture" setValue={() => {}} />
-              <Field text="Shipment Date" setValue={() => {}} />
-              <Field text="Date Received" setValue={() => {}} />
-              <Field text="Received By" setValue={() => {}} />
-              <Field text="Physical Condition" setValue={() => {}} />
-              <Field text="Specifications" setValue={() => {}} />
-              <Field text="Operating System" setValue={() => {}} />
-              <Field text="Accesories" setValue={() => {}} />
-              <Field text="Donor ID" setValue={() => {}} />
-              <Field text="Date Of Donation" setValue={() => {}} />
-              <Field text="Value" setValue={() => {}} />
-              <Field text="Location" setValue={() => {}} />
-              <Field text="Assigned User" setValue={() => {}} />
-              <Field text="Status" setValue={() => {}} />
-              <Field text="Distributor" setValue={() => {}} />
-              <Field text="Warranty Service Info" setValue={() => {}} />
-              <Field text="" setValue={() => {}} />
+              <Field text="Model" setValue={setModel} />
+              <Field text="Serial Number" setValue={setSerialNumber} />
+              <Field text="Mac ID" setValue={setMacId} />
+              <Field text="Year Of Manufacture" setValue={setManufacture} />
+              <Field text="Shipment Date" setValue={setShipmentDate} />
+              <Field text="Date Received" setValue={setDateReceived} />
+              <Field text="Received By" setValue={setReceivedBy} />
+              <Field text="Physical Condition" setValue={setPhysicalCondition} />
+              <Field text="Specifications" setValue={setSpecifications} />
+              <Field text="Operating System" setValue={setOperatingSystem} />
+              <Field text="Accesories" setValue={setAccessories} />
+              <Field text="Donor ID" setValue={setDonorID} />
+              <Field text="Date Of Donation" setValue={setDateOfDonation} />
+              <Field text="Value" setValue={setValue} />
+              <Field text="Location" setValue={setLocation} />
+              <Field text="Assigned User" setValue={setAssignedUser} />
+              <Field text="Status" setValue={setStatus} />
+              <Field text="Distributor" setValue={setDistributor} />
+              <Field text="Warranty Service Info" setValue={setWarrantyServiceInfo} />
+              <Field text="Notes" setValue={setNotes} />
             </div>
             <button
               type="submit"
