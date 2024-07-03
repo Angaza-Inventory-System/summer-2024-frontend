@@ -11,7 +11,6 @@ const Field = ({ text, setValue }: Props) => {
         type="text"
         className="mb-3 rounded-md border-none"
         onChange={(e) => setValue(e.target.value)}
-        value={text}
       />
     </>
   );

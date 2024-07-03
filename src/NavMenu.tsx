@@ -1,14 +1,16 @@
 import { Outlet, BrowserRouter, Routes, Route } from "react-router-dom";
 import NavButton from "./components/NavButton";
 import { useState } from "react";
+import Table from "./components/Table";
+import Form from "./components/Form";
 
 function NavMenu() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<NavBar />}>
-          <Route index element={<App />} />
-          <Route path="display" element={<DeviceDisplay />} />
+          <Route index element={<Table />} />
+          <Route path="form" element={<Form />} />
         </Route>
       </Routes>
     </BrowserRouter>
@@ -16,7 +18,7 @@ function NavMenu() {
 }
 //nav only for easy access to pages created, unless you prefer to type page links manually... replace false below with true in that case
 function NavBar() {
-  const [navOpen, setNav] = useState(true);
+  const [navOpen, setNav] = useState(false);
   return (
     <>
       <div

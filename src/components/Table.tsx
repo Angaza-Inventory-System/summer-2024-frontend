@@ -27,7 +27,7 @@ function Table() {
     num++;
   };
   const get = () => {
-    fetch("http://127.0.0.1:8000/devices/devices?page=2&page_size=2")
+    fetch("http://127.0.0.1:8000/devices/devices?page=1&page_size=16")
       .then((response) => response.json())
       .then((json) => setRows(json.results));
   };
