@@ -8,21 +8,23 @@ const Login = () => {
   const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    alert("You are Signed In");
-    try {
-      await axios.post(`http://localhost:5173/api/signin`, {
-        email,
-        password,
+const add = (event: React.FormEvent) => {
+    event.preventDefault();
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        email: email
+        password: password
+      }),
+    };
+    fetch("http://127.0.0.1:8000/devices/devices/", requestOptions)
+      .then((response) => response.json())
+      .then((response) => {
+        console.log(response);
       });
-    } catch (e) {
-      if (e.res.message) {
-        setError(e.res.message);
-      }
-    }
   };
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -34,9 +36,9 @@ const Login = () => {
             Angaza Technology Literacy Center
           </h1>
           {error ? <div>{error}</div> : ""}
-          <form className="mx-auto w-full max-w-sm" onSubmit={handleSubmit}>
+          <form className="mx-auto w-full max-w-sm" onSubmit={add}>
             <div className="flex flex-col pt-10">
-              <Field text="Email" setValue={(e) => setEmail(e.target.value)}>
+              <Field text="Email" setValue= {setEmail}>
               <label
                 htmlFor="password"
                 className="font-extrabold text-[#00008B]"
@@ -66,7 +68,7 @@ const Login = () => {
               <button
                 type="submit"
                 className="duration-600 mt-5 h-8 rounded-full bg-blue-500 text-lg font-medium leading-4 text-white transition ease-in hover:scale-105 hover:bg-sky-700"
-                onClick={handleSubmit}
+                onClick={add}
               >
                 Sign In
               </button>
