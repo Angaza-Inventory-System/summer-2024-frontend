@@ -3,7 +3,6 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  getPaginationRowModel,
   ColumnDef,
   ColumnHelper,
 } from "@tanstack/react-table";
@@ -14,7 +13,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 
 function Table() {
   const [rows, setRows] = useState([]);
-  var num = 17;
+  const [pagination, setPagination] = useState(1);
   const add = () => {
     const requestOptions = {
       method: "POST",
@@ -24,19 +23,22 @@ function Table() {
     fetch("http://127.0.0.1:8000/devices/devices/", requestOptions).then(
       (response) => response.json(),
     );
-    num++;
   };
   const get = () => {
-    fetch("http://127.0.0.1:8000/devices/devices?page=1&page_size=16")
+    fetch(
+      "http://127.0.0.1:8000/devices/devices?page=" +
+        pagination +
+        "&page_size=8",
+    )
       .then((response) => response.json())
-      .then((json) => setRows(json.results));
+      .then((json) => setRows(json.results))
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
   useEffect(() => {
-    //add();
-  }, []);
-  useEffect(() => {
     get();
-  }, []);
+  }, [pagination]);
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
   const [columnVisibility, setColumnVisibility] = useState<
     Record<string, boolean>
@@ -44,11 +46,6 @@ function Table() {
     a: false,
   });
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
-  const [pagination, setPagination] = useState({
-    pageIndex: 0,
-    pageSize: 16,
-  });
-
   const columnHelper: ColumnHelper<any> = createColumnHelper();
 
   const colDef: ColumnDef<any>[] = [
@@ -117,11 +114,10 @@ function Table() {
     columns: colDef,
     columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
-    getPaginationRowModel: getPaginationRowModel(),
     manualPagination: true,
     onPaginationChange: setPagination,
     autoResetPageIndex: false, // turn off auto reset of pageIndex
-    pageCount: -1,
+    pageCount: 2,
     state: {
       rowSelection,
       columnOrder,
@@ -314,7 +310,9 @@ function Table() {
         <div className="justify-self-end">
           <PaginationButton
             table={table}
-            index={pagination.pageIndex}
+            index={pagination}
+            setPage={setPagination}
+            get={get}
             pageCount={table.getPageCount()}
           />
         </div>
