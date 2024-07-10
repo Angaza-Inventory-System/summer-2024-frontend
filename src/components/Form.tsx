@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import Field from "./Field";
-import DateCalendarReferenceDate from "./DateCalendarReferenceDate"; // Adjust the path as per your project structure
 import better_better from "./better_better.png";
-import dayjs from "dayjs";
 
 const Form = () => {
   const add = (event: React.FormEvent) => {
@@ -42,32 +40,29 @@ const Form = () => {
         console.log(response);
       });
   };
-
-  const [id, setId] = useState<string>("");
-  const [type, setType] = useState<string>("");
-  const [make, setMake] = useState<string>("");
-  const [model, setModel] = useState<string>("");
-  const [serialNumber, setSerialNumber] = useState<string>("");
-  const [macId, setMacId] = useState<string>("");
-  const [manufacture, setManufacture] = useState<number>(0);
-  const [shipmentDate, setShipmentDate] = useState<string>(
-    dayjs().format("YYYY-MM-DD"),
-  );
-  const [dateReceived, setDateReceived] = useState<string>("");
-  const [receivedBy, setReceivedBy] = useState<number>(0);
-  const [physicalCondition, setPhysicalCondition] = useState<string>("");
-  const [specifications, setSpecifications] = useState<string>("");
-  const [operatingSystem, setOperatingSystem] = useState<string>("");
-  const [accessories, setAccessories] = useState<string>("");
-  const [donorID, setDonorID] = useState<number>(0);
-  const [dateOfDonation, setDateOfDonation] = useState<string>("");
-  const [value, setValue] = useState<string>("");
-  const [location, setLocation] = useState<number>(0);
-  const [assignedUser, setAssignedUser] = useState<number>(0);
-  const [status, setStatus] = useState<string>("");
-  const [distributor, setDistributor] = useState<string>("");
-  const [warrantyServiceInfo, setWarrantyServiceInfo] = useState<string>("");
-  const [notes, setNotes] = useState<string>("");
+  const [id, setId] = useState<String>();
+  const [type, setType] = useState<String>();
+  const [make, setMake] = useState<String>();
+  const [model, setModel] = useState<String>();
+  const [serialNumber, setSerialNumber] = useState<String>();
+  const [macId, setMacId] = useState<String>();
+  const [manufacture, setManufacture] = useState<number>();
+  const [shipmentDate, setShipmentDate] = useState<String>();
+  const [dateReceived, setDateReceived] = useState<String>();
+  const [receivedBy, setReceivedBy] = useState<number>();
+  const [physicalCondition, setPhysicalCondition] = useState<String>();
+  const [specifications, setSpecifications] = useState<String>();
+  const [operatingSystem, setOperatingSystem] = useState<String>();
+  const [accessories, setAccessories] = useState<String>();
+  const [donorID, setDonorID] = useState<number>();
+  const [dateOfDonation, setDateOfDonation] = useState<String>();
+  const [value, setValue] = useState<String>();
+  const [location, setLocation] = useState<number>();
+  const [assignedUser, setAssignedUser] = useState<number>();
+  const [status, setStatus] = useState<String>();
+  const [distributor, setDistributor] = useState<String>();
+  const [warrantyServiceInfo, setWarrantyServiceInfo] = useState<String>();
+  const [notes, setNotes] = useState<String>();
 
   return (
     <>
@@ -87,15 +82,7 @@ const Form = () => {
               <Field text="Serial Number" setValue={setSerialNumber} />
               <Field text="Mac ID" setValue={setMacId} />
               <Field text="Year Of Manufacture" setValue={setManufacture} />
-              <div className="flex flex-col">
-                <label className="text-sm font-semibold text-gray-600">
-                  Shipment Date
-                </label>
-                <DateCalendarReferenceDate
-                  referenceDate={shipmentDate}
-                  setReferenceDate={setShipmentDate}
-                />
-              </div>
+              <Field text="Shipment Date" setValue={setShipmentDate} />
               <Field text="Date Received" setValue={setDateReceived} />
               <Field text="Received By" setValue={setReceivedBy} />
               <Field
@@ -131,5 +118,4 @@ const Form = () => {
     </>
   );
 };
-
 export default Form;
