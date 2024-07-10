@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import Field from "./Field";
+import DateCalendarReferenceDate from "./DateCalendarReferenceDate"; // Adjust the path as per your project structure
 import better_better from "./better_better.png";
-
+import dayjs from "dayjs";
 
 const Form = () => {
   const add = (event: React.FormEvent) => {
@@ -41,29 +42,32 @@ const Form = () => {
         console.log(response);
       });
   };
-  const [id, setId] = useState<String>();
-  const [type, setType] = useState<String>();
-  const [make, setMake] = useState<String>();
-  const [model, setModel] = useState<String>();
-  const [serialNumber, setSerialNumber] = useState<String>();
-  const [macId, setMacId] = useState<String>();
-  const [manufacture, setManufacture] = useState<number>();
-  const [shipmentDate, setShipmentDate] = useState<String>();
-  const [dateReceived, setDateReceived] = useState<String>();
-  const [receivedBy, setReceivedBy] = useState<number>();
-  const [physicalCondition, setPhysicalCondition] = useState<String>();
-  const [specifications, setSpecifications] = useState<String>();
-  const [operatingSystem, setOperatingSystem] = useState<String>();
-  const [accessories, setAccessories] = useState<String>();
-  const [donorID, setDonorID] = useState<number>();
-  const [dateOfDonation, setDateOfDonation] = useState<String>();
-  const [value, setValue] = useState<String>();
-  const [location, setLocation] = useState<number>();
-  const [assignedUser, setAssignedUser] = useState<number>();
-  const [status, setStatus] = useState<String>();
-  const [distributor, setDistributor] = useState<String>();
-  const [warrantyServiceInfo, setWarrantyServiceInfo] = useState<String>();
-  const [notes, setNotes] = useState<String>();
+
+  const [id, setId] = useState<string>("");
+  const [type, setType] = useState<string>("");
+  const [make, setMake] = useState<string>("");
+  const [model, setModel] = useState<string>("");
+  const [serialNumber, setSerialNumber] = useState<string>("");
+  const [macId, setMacId] = useState<string>("");
+  const [manufacture, setManufacture] = useState<number>(0);
+  const [shipmentDate, setShipmentDate] = useState<string>(
+    dayjs().format("YYYY-MM-DD"),
+  );
+  const [dateReceived, setDateReceived] = useState<string>("");
+  const [receivedBy, setReceivedBy] = useState<number>(0);
+  const [physicalCondition, setPhysicalCondition] = useState<string>("");
+  const [specifications, setSpecifications] = useState<string>("");
+  const [operatingSystem, setOperatingSystem] = useState<string>("");
+  const [accessories, setAccessories] = useState<string>("");
+  const [donorID, setDonorID] = useState<number>(0);
+  const [dateOfDonation, setDateOfDonation] = useState<string>("");
+  const [value, setValue] = useState<string>("");
+  const [location, setLocation] = useState<number>(0);
+  const [assignedUser, setAssignedUser] = useState<number>(0);
+  const [status, setStatus] = useState<string>("");
+  const [distributor, setDistributor] = useState<string>("");
+  const [warrantyServiceInfo, setWarrantyServiceInfo] = useState<string>("");
+  const [notes, setNotes] = useState<string>("");
 
   return (
     <>
@@ -73,8 +77,8 @@ const Form = () => {
           className="absolute inset-0 h-screen w-screen object-cover"
           src="https://cdn.discordapp.com/attachments/1249232893268590684/1254204922782814310/better_better.png?ex=667f3c5b&is=667deadb&hm=9be0a0caee354981fbd1b351700066fc98db66d3bfc42f33b5fd01d549f1dd11&"
         />
-        <div className="relative h-screen w-1/2 overflow-y-auto bg-white bg-opacity-75 rounded-lg p-8">
-          <form className="mx-auto w-full max-w-sm ">
+        <div className="relative h-screen w-1/2 overflow-y-auto rounded-lg bg-white bg-opacity-75 p-8">
+          <form className="mx-auto w-full max-w-sm">
             <div className="flex flex-col space-y-4">
               <Field text="Device ID" setValue={setId} />
               <Field text="Type" setValue={setType} />
@@ -83,7 +87,15 @@ const Form = () => {
               <Field text="Serial Number" setValue={setSerialNumber} />
               <Field text="Mac ID" setValue={setMacId} />
               <Field text="Year Of Manufacture" setValue={setManufacture} />
-              <Field text="Shipment Date" setValue={setShipmentDate} />
+              <div className="flex flex-col">
+                <label className="text-sm font-semibold text-gray-600">
+                  Shipment Date
+                </label>
+                <DateCalendarReferenceDate
+                  referenceDate={shipmentDate}
+                  setReferenceDate={setShipmentDate}
+                />
+              </div>
               <Field text="Date Received" setValue={setDateReceived} />
               <Field text="Received By" setValue={setReceivedBy} />
               <Field
@@ -119,4 +131,5 @@ const Form = () => {
     </>
   );
 };
+
 export default Form;
