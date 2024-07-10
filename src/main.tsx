@@ -8,6 +8,6 @@ import NavMenu from "./NavMenu";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <NavMenu />
+    <Form />
   </React.StrictMode>,
 );

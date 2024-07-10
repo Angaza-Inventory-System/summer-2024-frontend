@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import Field from "./Field";
+import better_better from "./better_better.png";
+
 
 const Form = () => {
   const add = (event: React.FormEvent) => {
@@ -71,9 +73,9 @@ const Form = () => {
           className="absolute inset-0 h-screen w-screen object-cover"
           src="https://cdn.discordapp.com/attachments/1249232893268590684/1254204922782814310/better_better.png?ex=667f3c5b&is=667deadb&hm=9be0a0caee354981fbd1b351700066fc98db66d3bfc42f33b5fd01d549f1dd11&"
         />
-        <div className="relative h-screen w-1/2 overflow-y-auto">
-          <form className="mx-auto w-full max-w-sm">
-            <div className="flex flex-col pt-10">
+        <div className="relative h-screen w-1/2 overflow-y-auto bg-white bg-opacity-75 rounded-lg p-8">
+          <form className="mx-auto w-full max-w-sm ">
+            <div className="flex flex-col space-y-4">
               <Field text="Device ID" setValue={setId} />
               <Field text="Type" setValue={setType} />
               <Field text="Make" setValue={setMake} />

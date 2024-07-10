@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from "react";
+
 interface Props {
   text: string;
   setValue: Dispatch<SetStateAction<string>>;
@@ -5,14 +7,14 @@ interface Props {
 
 const Field = ({ text, setValue }: Props) => {
   return (
-    <>
-      <label className="font-extrabold text-[#00008B]">{text}</label>
+    <div className="flex items-center mb-6">
+      <label className="w-32 font-bold text-[#3aaef1ec]">{text}</label>
       <input
         type="text"
-        className="mb-3 rounded-md border-none"
+        className="flex-1 ml-4 px-3 py-2 border rounded-md shadow-sm border-black"
         onChange={(e) => setValue(e.target.value)}
       />
-    </>
+    </div>
   );
 };
 
