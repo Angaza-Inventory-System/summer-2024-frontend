@@ -4,18 +4,16 @@ import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { DateCalendar } from "@mui/x-date-pickers/DateCalendar";
+//import {DatePicker} from "@mui/x-date-pickers/DateCalendar";
 
 interface Props {
   referenceDate: string;
   setReferenceDate: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const DateCalendarReferenceDate: React.FC<Props> = ({
-  referenceDate,
-  setReferenceDate,
-}) => {
-  const handleDateChange = (newDate: string) => {
-    setReferenceDate(newDate);
+function DateCalendarReferenceDate(referenceDate, setReferenceDate) {
+  const handleDateChange = (newDate: dayjs.Dayjs) => {
+    setReferenceDate(newDate.format("YYYY-MM-DD"));
   };
 
   return (
@@ -29,6 +27,6 @@ const DateCalendarReferenceDate: React.FC<Props> = ({
       </DemoContainer>
     </LocalizationProvider>
   );
-};
+}
 
 export default DateCalendarReferenceDate;

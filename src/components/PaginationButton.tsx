@@ -11,17 +11,11 @@ export function PaginationButton({
   get,
 }: Props) {
   const handlePreviousPage = () => {
-    if (index > 1) {
-      setPage(index - 1);
-      get();
-    }
+    if (index > 1) setPage(index - 1);
   };
 
   const handleNextPage = () => {
-    if (index < pageCount) {
-      setPage(index + 1);
-      get();
-    }
+    if (index < pageCount) setPage(index + 1);
   };
   return (
     <div className="flex h-8 items-center -space-x-px text-sm">

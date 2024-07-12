@@ -5,15 +5,18 @@ import {
   useReactTable,
   ColumnDef,
   ColumnHelper,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 import Checkbox from "./Checkbox";
 import { Dropdown } from "flowbite-react";
 import { PaginationButton } from "./PaginationButton";
 import { createColumnHelper } from "@tanstack/react-table";
+import { RowDetailsPopup } from "./RowDetailsPopup";
 
 function Table() {
   const [rows, setRows] = useState([]);
   const [pagination, setPagination] = useState(1);
+  const [pageCount, setPage] = useState(0);
   const add = () => {
     const requestOptions = {
       method: "POST",
@@ -31,7 +34,10 @@ function Table() {
         "&page_size=8",
     )
       .then((response) => response.json())
-      .then((json) => setRows(json.results))
+      .then((json) => {
+        setRows(json.results);
+        setPage(json.total_pages);
+      })
       .catch((error) => {
         console.error("Error fetching data:", error);
       });
@@ -43,10 +49,34 @@ function Table() {
   const [columnVisibility, setColumnVisibility] = useState<
     Record<string, boolean>
   >({
-    a: false,
+    device_id: true,
+    type: true,
+    make: true,
+    model: true,
+    serial_number: false,
+    mac_id: false,
+    year_of_manufacture: false,
+    shipment_date: true,
+    date_received: true,
+    physical_condition: true,
+    specifications: false,
+    operating_system: true,
+    accessories: false,
+    date_of_donation: false,
+    value: false,
+    status: false,
+    distributor: false,
+    warranty_service_info: false,
+    notes: true,
+    received_by: false,
+    donor: false,
+    location: false,
+    assigned_user: false,
   });
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const columnHelper: ColumnHelper<any> = createColumnHelper();
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedRowData, setSelectedRowData] = useState(null);
 
   const colDef: ColumnDef<any>[] = [
     {
@@ -74,7 +104,7 @@ function Table() {
       ),
     },
     columnHelper.accessor("device_id", {
-      header: "ID",
+      header: "Device ID",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("type", {
@@ -89,6 +119,82 @@ function Table() {
       header: "Model",
       cell: (info) => info.getValue(),
     }),
+    columnHelper.accessor("serial_number", {
+      header: "Serial Number",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("mac_id", {
+      header: "Mac ID",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("year_of_manufacture", {
+      header: "Year Of Manufacture",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("shipment_date", {
+      header: "Shipment Date",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("date_received", {
+      header: "Date Received",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("physical_condition", {
+      header: "Physical Condition",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("specifications", {
+      header: "Specifications",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("operating_system", {
+      header: "Operation System",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("accessories", {
+      header: "Accessories",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("date_of_donation", {
+      header: "Date Of Donation",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("value", {
+      header: "Value",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("status", {
+      header: "Status",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("distributor", {
+      header: "Distributor",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("warranty_service_info", {
+      header: "Warranty Service Info",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("notes", {
+      header: "Notes",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("received_by", {
+      header: "Received By",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("donor", {
+      header: "Donor",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("location", {
+      header: "Location",
+      cell: (info) => info.getValue(),
+    }),
+    columnHelper.accessor("assigned_user", {
+      header: "Assigned User",
+      cell: (info) => info.getValue(),
+    }),
     {
       id: "details",
       size: 62,
@@ -96,7 +202,10 @@ function Table() {
       cell: ({ row }) => (
         <button
           type="button"
-          onClick={() => {}}
+          onClick={() => {
+            setSelectedRowData(row.original);
+            setShowPopup(true);
+          }}
           className="flex h-8 items-center justify-center rounded-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
         >
           ...
@@ -115,14 +224,10 @@ function Table() {
     columnResizeMode: "onChange",
     getCoreRowModel: getCoreRowModel(),
     manualPagination: true,
-    onPaginationChange: setPagination,
-    autoResetPageIndex: false, // turn off auto reset of pageIndex
-    pageCount: 2,
     state: {
       rowSelection,
       columnOrder,
       columnVisibility,
-      pagination,
     },
     onColumnVisibilityChange: setColumnVisibility,
     onRowSelectionChange: setRowSelection,
@@ -140,6 +245,12 @@ function Table() {
   //document.documentElement.classList.add("dark");
   return (
     <div className="w-full p-2">
+      {showPopup && (
+        <RowDetailsPopup
+          rowData={selectedRowData}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
       <div className="grid w-full grid-cols-2 pb-3">
         <Dropdown
           label="Columns"
@@ -313,7 +424,7 @@ function Table() {
             index={pagination}
             setPage={setPagination}
             get={get}
-            pageCount={table.getPageCount()}
+            pageCount={pageCount}
           />
         </div>
       </div>

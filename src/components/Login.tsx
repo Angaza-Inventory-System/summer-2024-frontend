@@ -1,21 +1,19 @@
 import React, { useState } from "react";
-import axios from "axios";
 import Field from "./Field";
 
-const Login = () => {
+function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
 
-const add = (event: React.FormEvent) => {
+  const add = (event: React.FormEvent) => {
     event.preventDefault();
     const requestOptions = {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: email
-        password: password
+        email: email,
+        password: password,
       }),
     };
     fetch("http://127.0.0.1:8000/devices/devices/", requestOptions)
@@ -35,10 +33,9 @@ const add = (event: React.FormEvent) => {
           <h1 className="pb-10 pt-10 text-center text-3xl font-extrabold text-[#00008B]">
             Angaza Technology Literacy Center
           </h1>
-          {error ? <div>{error}</div> : ""}
           <form className="mx-auto w-full max-w-sm" onSubmit={add}>
             <div className="flex flex-col pt-10">
-              <Field text="Email" setValue= {setEmail}>
+              <Field text="Email" setValue={setEmail} />
               <label
                 htmlFor="password"
                 className="font-extrabold text-[#00008B]"
@@ -79,9 +76,9 @@ const add = (event: React.FormEvent) => {
       <img
         alt="a"
         className="h-screen w-screen"
-        src="https://cdn.discordapp.com/attachments/1249232893268590684/1254204922782814310/better_better.png?ex=667f3c5b&is=667deadb&hm=9be0a0caee354981fbd1b351700066fc98db66d3bfc42f33b5fd01d549f1dd11&"
+        src="https://cdn.discordapp.com/attachments/1249232893268590684/1254204922782814310/better_better.png?ex=66905fdb&is=668f0e5b&hm=8710dc5025653c1800e362dac25dbe043baacfbfe9f00e3dbc08782e23872049&"
       />
     </>
   );
-};
+}
 export default Login;

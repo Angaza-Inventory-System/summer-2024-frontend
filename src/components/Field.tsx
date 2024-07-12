@@ -5,17 +5,17 @@ interface Props {
   setValue: Dispatch<SetStateAction<string>>;
 }
 
-const Field = ({ text, setValue }: Props) => {
+function Field({ text, setValue }: Props) {
   return (
-    <div className="flex items-center mb-6">
+    <div className="mb-6 flex items-center">
       <label className="w-32 font-bold text-[#3aaef1ec]">{text}</label>
       <input
         type="text"
-        className="flex-1 ml-4 px-3 py-2 border rounded-md shadow-sm border-black"
+        className="ml-4 flex-1 rounded-md border border-black px-3 py-2 shadow-sm"
         onChange={(e) => setValue(e.target.value)}
       />
     </div>
   );
-};
+}
 
 export default Field;

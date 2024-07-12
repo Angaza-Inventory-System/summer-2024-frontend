@@ -1,8 +1,16 @@
 import { useEffect, useState } from "react";
 import Field from "./Field";
 import better_better from "./better_better.png";
-
+import DateCalendarReferenceDate from "./DateCalendarReferenceDate";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker/DatePicker";
+import dayjs from "dayjs";
 const Form = () => {
+  const [shipmentDate, setShipmentDate] = useState<dayjs.Dayjs | null>(null);
+  const [dateReceived, setDateReceived] = useState<dayjs.Dayjs | null>(null);
+  const [dateOfDonation, setDateOfDonation] = useState<dayjs.Dayjs | null>(
+    null,
+  );
+
   const add = (event: React.FormEvent) => {
     event.preventDefault();
     const requestOptions = {
@@ -16,15 +24,15 @@ const Form = () => {
         serial_number: serialNumber,
         mac_id: macId,
         year_of_manufacture: manufacture,
-        shipment_date: shipmentDate,
-        date_received: dateReceived,
+        shipment_date: shipmentDate?.format("YYYY-MM-DD"),
+        date_received: dateReceived?.format("YYYY-MM-DD"),
         received_by: receivedBy,
         physical_condition: physicalCondition,
         specifications: specifications,
         operating_system: operatingSystem,
         accessories: accessories,
         donor: donorID,
-        date_of_donation: dateOfDonation,
+        date_of_donation: dateOfDonation?.format("YYYY-MM-DD"),
         value: value,
         location: location,
         assigned_user: assignedUser,
@@ -47,15 +55,13 @@ const Form = () => {
   const [serialNumber, setSerialNumber] = useState<String>();
   const [macId, setMacId] = useState<String>();
   const [manufacture, setManufacture] = useState<number>();
-  const [shipmentDate, setShipmentDate] = useState<String>();
-  const [dateReceived, setDateReceived] = useState<String>();
   const [receivedBy, setReceivedBy] = useState<number>();
   const [physicalCondition, setPhysicalCondition] = useState<String>();
   const [specifications, setSpecifications] = useState<String>();
   const [operatingSystem, setOperatingSystem] = useState<String>();
   const [accessories, setAccessories] = useState<String>();
   const [donorID, setDonorID] = useState<number>();
-  const [dateOfDonation, setDateOfDonation] = useState<String>();
+
   const [value, setValue] = useState<String>();
   const [location, setLocation] = useState<number>();
   const [assignedUser, setAssignedUser] = useState<number>();
@@ -70,9 +76,9 @@ const Form = () => {
         <img
           alt="a"
           className="absolute inset-0 h-screen w-screen object-cover"
-          src="https://cdn.discordapp.com/attachments/1249232893268590684/1254204922782814310/better_better.png?ex=667f3c5b&is=667deadb&hm=9be0a0caee354981fbd1b351700066fc98db66d3bfc42f33b5fd01d549f1dd11&"
+          src="https://cdn.discordapp.com/attachments/1249232893268590684/1254204922782814310/better_better.png?ex=66905fdb&is=668f0e5b&hm=8710dc5025653c1800e362dac25dbe043baacfbfe9f00e3dbc08782e23872049&"
         />
-        <div className="relative h-screen w-1/2 overflow-y-auto rounded-lg bg-white bg-opacity-75 p-8">
+        <div className="bg-white/2000 relative h-screen w-screen overflow-y-auto rounded-lg p-8">
           <form className="mx-auto w-full max-w-sm">
             <div className="flex flex-col space-y-4">
               <Field text="Device ID" setValue={setId} />
@@ -82,8 +88,30 @@ const Form = () => {
               <Field text="Serial Number" setValue={setSerialNumber} />
               <Field text="Mac ID" setValue={setMacId} />
               <Field text="Year Of Manufacture" setValue={setManufacture} />
-              <Field text="Shipment Date" setValue={setShipmentDate} />
-              <Field text="Date Received" setValue={setDateReceived} />
+              <div className="mb-6 flex items-center">
+                <label className="w-32 font-bold text-[#3aaef1ec]">
+                  Shipment Date
+                </label>
+                <DateCalendarReferenceDate
+                  referenceDate={shipmentDate ?? dayjs()}
+                  setReferenceDate={setShipmentDate}
+                />
+                <span className="ml-4">
+                  {shipmentDate?.format("YYYY-MM-DD")}
+                </span>
+              </div>
+              <div className="mb-6 flex items-center">
+                <label className="w-32 font-bold text-[#3aaef1ec]">
+                  Date Received
+                </label>
+                <DateCalendarReferenceDate
+                  referenceDate={dateReceived ?? dayjs}
+                  setReferenceDate={setDateReceived}
+                />
+                <span className="ml-4">
+                  {dateReceived?.format("YYYY-MM-DD")}
+                </span>
+              </div>
               <Field text="Received By" setValue={setReceivedBy} />
               <Field
                 text="Physical Condition"
@@ -93,7 +121,18 @@ const Form = () => {
               <Field text="Operating System" setValue={setOperatingSystem} />
               <Field text="Accesories" setValue={setAccessories} />
               <Field text="Donor ID" setValue={setDonorID} />
-              <Field text="Date Of Donation" setValue={setDateOfDonation} />
+              <div className="mb-6 flex items-center">
+                <label className="w-32 font-bold text-[#3aaef1ec]">
+                  Date Of Donation
+                </label>
+                <DateCalendarReferenceDate
+                  referenceDate={dateOfDonation ?? dayjs()}
+                  setReferenceDate={setDateOfDonation}
+                />
+                <span className="ml-4">
+                  {dateOfDonation?.format("YYYY-MM-DD")}
+                </span>
+              </div>
               <Field text="Value" setValue={setValue} />
               <Field text="Location" setValue={setLocation} />
               <Field text="Assigned User" setValue={setAssignedUser} />
