@@ -17,6 +17,7 @@ function Table() {
   const [rows, setRows] = useState([]);
   const [pagination, setPagination] = useState(1);
   const [pageCount, setPage] = useState(0);
+  const [selectedRowData, setSelectedRowData] = useState(null);
   const add = () => {
     const requestOptions = {
       method: "POST",
@@ -43,6 +44,7 @@ function Table() {
       });
   };
   useEffect(() => {
+    table.resetRowSelection();
     get();
   }, [pagination]);
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
@@ -76,7 +78,6 @@ function Table() {
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
   const columnHelper: ColumnHelper<any> = createColumnHelper();
   const [showPopup, setShowPopup] = useState(false);
-  const [selectedRowData, setSelectedRowData] = useState(null);
 
   const colDef: ColumnDef<any>[] = [
     {
