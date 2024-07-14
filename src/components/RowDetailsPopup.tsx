@@ -1,94 +1,119 @@
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import QRCode from "react-qr-code";
+
 export const RowDetailsPopup = ({ rowData, onClose }) => {
+  const [data, setData] = useState(rowData || {});
+  const { id } = useParams();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!rowData) {
+        const response = await fetch(
+          `http://127.0.0.1:8000/devices/devices/${id}`,
+        );
+        const json = await response.json();
+        setData(json);
+      }
+    };
+    fetchData();
+  }, [id, rowData]);
+  if (data.detail == "Not found.") return <div>not found</div>;
   return (
-    <div className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-75">
-      <div className="no-scrollbar h-1/3 w-96 overflow-y-auto rounded-lg bg-white p-6 shadow-lg">
-        <div className="mb-4 text-lg font-semibold">Device Details</div>
+    <div
+      className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-75"
+      onClick={onClose}
+    >
+      <div
+        className={`no-scrollbar overflow-y-auto rounded-lg bg-white p-6 shadow-lg ${rowData ? "h-1/3 w-96" : "h-full w-full"}`}
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="mb-2">
-          <div className="font-bold">Device ID:</div> {rowData.device_id}
+          <div className="font-bold">Device ID:</div> {data.device_id}
         </div>
         <div className="mb-2">
-          <div className="font-bold">Type:</div> {rowData.type}
+          <div className="font-bold">Type:</div> {data.type}
         </div>
         <div className="mb-2">
-          <div className="font-bold">Make:</div> {rowData.make}
+          <div className="font-bold">Make:</div> {data.make}
         </div>
         <p className="mb-2">
-          <div className="font-bold">Model:</div> {rowData.model}
+          <div className="font-bold">Model:</div> {data.model}
         </p>
         <p className="mb-2">
           <div className="font-bold">Serial Number:</div>
-          {rowData.serial_number}
+          {data.serial_number}
         </p>
         <p className="mb-2">
-          <div className="font-bold">Mac Id:</div> {rowData.mac_id}
+          <div className="font-bold">Mac Id:</div> {data.mac_id}
         </p>
         <p className="mb-2">
           <div className="font-bold">Year Of Manufacture:</div>
-          {rowData.year_of_manufacture}
+          {data.year_of_manufacture}
         </p>
         <p className="mb-2">
           <div className="font-bold">Shipment Date:</div>
-          {rowData.shipment_date}
+          {data.shipment_date}
         </p>
         <p className="mb-2">
-          <div className="font-bold">Date Received:</div> {rowData.dateReceived}
+          <div className="font-bold">Date Received:</div> {data.dateReceived}
         </p>
         <p className="mb-2">
           <div className="font-bold">Physical Condition:</div>
-          {rowData.physical_condition}
+          {data.physical_condition}
         </p>
         <p className="mb-2">
           <div className="font-bold">Specifications:</div>
-          {rowData.specifications}
+          {data.specifications}
         </p>
         <p className="mb-2">
           <div className="font-bold">Operating System:</div>
-          {rowData.operating_system}
+          {data.operating_system}
         </p>
         <p className="mb-2">
-          <div className="font-bold">Accessories:</div> {rowData.accessories}
+          <div className="font-bold">Accessories:</div> {data.accessories}
         </p>
         <p className="mb-2">
           <div className="font-bold">Date Of Donation:</div>
-          {rowData.date_of_donation}
+          {data.date_of_donation}
         </p>
         <p className="mb-2">
-          <div className="font-bold">Value:</div> {rowData.value}
+          <div className="font-bold">Value:</div> {data.value}
         </p>
         <p className="mb-2">
-          <div className="font-bold">Status:</div> {rowData.status}
+          <div className="font-bold">Status:</div> {data.status}
         </p>
         <p className="mb-2">
-          <div className="font-bold">Distributor:</div> {rowData.distributor}
+          <div className="font-bold">Distributor:</div> {data.distributor}
         </p>
         <p className="mb-2">
           <div className="font-bold">Warranty Service Info:</div>
-          {rowData.warranty_service_info}
+          {data.warranty_service_info}
         </p>
         <p className="mb-2">
-          <div className="font-bold">Notes:</div> {rowData.notes}
+          <div className="font-bold">Notes:</div> {data.notes}
         </p>
         <p className="mb-2">
           <div className="font-bold">Received By:</div>
-          {rowData.received_by}
+          {data.received_by}
         </p>
         <p className="mb-2">
-          <div className="font-bold">Donor:</div> {rowData.donor}
+          <div className="font-bold">Donor:</div> {data.donor}
         </p>
         <p className="mb-2">
           <div className="font-bold">Location:</div>
-          {rowData.location}
+          {data.location}
         </p>
         <p className="mb-2">
-          <div className="font-bold">Assigned User:</div>{" "}
-          {rowData.assigned_user}
+          <div className="font-bold">Assigned User:</div> {data.assigned_user}
         </p>
+        <QRCode value={"http://localhost:5173/" + id} />
         <button
           type="button"
-          onClick={onClose}
+          onClick={() => {}}
           className="mt-4 rounded-md bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300"
         >
-          Close
+          Edit
         </button>
       </div>
     </div>

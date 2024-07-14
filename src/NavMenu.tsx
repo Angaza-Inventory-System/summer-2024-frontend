@@ -4,6 +4,7 @@ import { useState } from "react";
 import Table from "./components/Table";
 import Form from "./components/Form";
 import Login from "./components/Login";
+import { RowDetailsPopup } from "./components/RowDetailsPopup";
 
 function NavMenu() {
   return (
@@ -12,6 +13,10 @@ function NavMenu() {
         <Route path="/" element={<NavBar />}>
           <Route index element={<Table />} />
           <Route path="form" element={<Form />} />
+          <Route
+            path=":id"
+            element={<RowDetailsPopup rowData={undefined} onClose={() => {}} />}
+          />
           <Route path="login" element={<Login />} />
         </Route>
       </Routes>
