@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 import Field from "./Field";
+import Cookies from "js-cookie";
 
-function Login() {
+interface Props {
+  setToken: any;
+  token: string;
+}
+function Login({ token, setToken }: Props) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -20,9 +25,14 @@ function Login() {
       .then((response) => response.json())
       .then((response) => {
         console.log(response);
+      })
+      .then((response) => {
+        setToken(response);
       });
   };
-
+  //sets stores JWT token as cookies
+  Cookies.set("token", token, { expires: 7, secure: true });
+  console.log(token);
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };

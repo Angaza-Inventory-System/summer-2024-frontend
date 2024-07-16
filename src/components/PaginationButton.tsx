@@ -1,15 +1,12 @@
+import { Dispatch, SetStateAction } from "react";
+
 interface Props {
-  table: any;
   index: number;
+  setPage: Dispatch<SetStateAction<number>>;
+  pageCount: number;
 }
 
-export function PaginationButton({
-  table,
-  index,
-  setPage,
-  pageCount,
-  get,
-}: Props) {
+export function PaginationButton({ index, setPage, pageCount }: Props) {
   const handlePreviousPage = () => {
     if (index > 1) setPage(index - 1);
   };

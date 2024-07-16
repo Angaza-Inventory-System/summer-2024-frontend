@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from "react";
 
 interface Props {
   text: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  setValue: Dispatch<SetStateAction<any>>;
 }
 
 function Field({ text, setValue }: Props) {

@@ -1,10 +1,9 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import "./globals.css";
-import NavMenu from "./NavMenu";
-
+import Routing from "./Routing";
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <NavMenu />
+    <Routing />
   </React.StrictMode>,
 );
