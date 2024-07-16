@@ -220,15 +220,20 @@ function Table({ url, jsonHeaders }: Props) {
     colSizes[`--header-${header.id}-size`] = header.getSize();
     colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
   }
+
+  const [refetch, setRefetch] = useState(false);
+
   const del = async () => {
-    for (const key in rowSelection) {
-      await fetch(`${url}/devices/${key}`, {
-        method: "DELETE",
-        headers: jsonHeaders,
-      });
-    }
-    setRows(rows.filter((row) => !rowSelection[row.device_id]));
-    table.resetRowSelection();
+    const selected = Object.keys(rowSelection);
+    await Promise.all(
+      selected.map((device_id) =>
+        fetch(`${url}/devices/${device_id}`, {
+          method: "DELETE",
+          headers: jsonHeaders,
+        }),
+      ),
+    );
+    setRefetch((prev) => !prev);
   };
   useEffect(() => {
     const getTable = () => {
@@ -248,7 +253,7 @@ function Table({ url, jsonHeaders }: Props) {
     };
     getTable();
     table.resetRowSelection();
-  }, [pagination]);
+  }, [pagination, refetch]);
   return (
     <>
       <div className="w-full p-2">
