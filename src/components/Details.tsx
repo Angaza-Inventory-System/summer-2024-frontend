@@ -5,10 +5,10 @@ import QRCode from "react-qr-code";
 interface Props {
   rowData: any;
   onClose: () => void;
-  options: any;
+  jsonHeaders: any;
 }
 
-export const Details = ({ rowData, onClose, options }: Props) => {
+export const Details = ({ rowData, onClose, jsonHeaders }: Props) => {
   const [data, setData] = useState(rowData || {});
   const { id } = useParams();
 
@@ -17,7 +17,10 @@ export const Details = ({ rowData, onClose, options }: Props) => {
       if (!rowData) {
         const response = await fetch(
           `http://127.0.0.1:8000/devices/devices/${id}`,
-          options,
+          {
+            method: "GET",
+            headers: jsonHeaders,
+          },
         );
         const json = await response.json();
         setData(json);

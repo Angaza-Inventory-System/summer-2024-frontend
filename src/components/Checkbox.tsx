@@ -1,10 +1,11 @@
 import React from "react";
-
+// @ts-ignore
 function Checkbox({ indeterminate, ...rest }) {
   const ref = React.useRef(null);
 
   React.useEffect(() => {
     if (typeof indeterminate === "boolean") {
+      // @ts-ignore
       ref.current.indeterminate = !rest.checked && indeterminate;
     }
   }, [ref, indeterminate]);

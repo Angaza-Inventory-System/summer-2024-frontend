@@ -14,10 +14,10 @@ import { Details } from "./Details";
 
 interface Props {
   url: string;
-  options: any;
+  jsonHeaders: any;
 }
 
-function Table({ url, options }: Props) {
+function Table({ url, jsonHeaders }: Props) {
   //document.documentElement.classList.add("dark");
   const [showPopup, setShowPopup] = useState(false);
 
@@ -196,6 +196,7 @@ function Table({ url, options }: Props) {
       size: 200,
       minSize: 66,
     },
+    getRowId: (row) => row.device_id,
     data: rows,
     columns: colDef,
     columnResizeMode: "onChange",
@@ -219,11 +220,23 @@ function Table({ url, options }: Props) {
     colSizes[`--header-${header.id}-size`] = header.getSize();
     colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
   }
-
+  const del = async () => {
+    for (const key in rowSelection) {
+      await fetch(`${url}/devices/${key}`, {
+        method: "DELETE",
+        headers: jsonHeaders,
+      });
+    }
+    setRows(rows.filter((row) => !rowSelection[row.device_id]));
+    table.resetRowSelection();
+  };
   useEffect(() => {
-    (() => {
+    const getTable = () => {
       // @ts-ignore
-      fetch(`${url}/devices/devices?page=${pagination}&page_size=8`, options)
+      fetch(`${url}/devices/devices?page=${pagination}&page_size=8`, {
+        method: "GET",
+        headers: jsonHeaders,
+      })
         .then((response) => response.json())
         .then((json) => {
           setRows(json.results);
@@ -232,10 +245,10 @@ function Table({ url, options }: Props) {
         .catch((error) => {
           console.error("Error fetching data:", error);
         });
-    })();
+    };
+    getTable();
     table.resetRowSelection();
   }, [pagination]);
-
   return (
     <>
       <div className="w-full p-2">
@@ -243,42 +256,52 @@ function Table({ url, options }: Props) {
           <Details
             rowData={selectedRowData}
             onClose={() => setShowPopup(false)}
-            options={options}
+            jsonHeaders={jsonHeaders}
           />
         )}
         <div className="grid w-full grid-cols-2 pb-3">
-          <Dropdown
-            label="Columns"
-            dismissOnClick={false}
-            size="sm"
-            theme={{ floating: { target: "h-10 w-[100px]" } }}
-          >
-            {table.getAllLeafColumns().map((column) => {
-              if (column.id === "select" || column.id === "details")
-                return null;
-              return (
-                <div
-                  key={column.id}
-                  className="flex items-center hover:bg-slate-200"
-                >
-                  <label className="flex items-center">
-                    <input
-                      type="checkbox"
-                      checked={column.getIsVisible()}
-                      onChange={column.getToggleVisibilityHandler()}
-                      className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
-                    />
-                    <span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                      {typeof column.columnDef.header === "function"
-                        ? // @ts-ignore
-                          flexRender(column.columnDef.header, { column })
-                        : column.columnDef.header}
-                    </span>
-                  </label>
-                </div>
-              );
-            })}
-          </Dropdown>
+          <div className="flex h-full">
+            <div className="pr-2">
+              <button
+                type="button"
+                className="flex h-10 items-center justify-center rounded-lg border border-gray-300 bg-white leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+              >
+                Sign Out
+              </button>
+            </div>
+            <Dropdown
+              label="Columns"
+              dismissOnClick={false}
+              size="sm"
+              theme={{ floating: { target: "h-10 w-[100px]" } }}
+            >
+              {table.getAllLeafColumns().map((column) => {
+                if (column.id === "select" || column.id === "details")
+                  return null;
+                return (
+                  <div
+                    key={column.id}
+                    className="flex items-center hover:bg-slate-200"
+                  >
+                    <label className="flex items-center">
+                      <input
+                        type="checkbox"
+                        checked={column.getIsVisible()}
+                        onChange={column.getToggleVisibilityHandler()}
+                        className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
+                      />
+                      <span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                        {typeof column.columnDef.header === "function"
+                          ? // @ts-ignore
+                            flexRender(column.columnDef.header, { column })
+                          : column.columnDef.header}
+                      </span>
+                    </label>
+                  </div>
+                );
+              })}
+            </Dropdown>
+          </div>
           <div className="flex h-full justify-self-end">
             <Dropdown
               label="Filter"
@@ -412,6 +435,7 @@ function Table({ url, options }: Props) {
               </button>
               <button
                 type="button"
+                onClick={del}
                 className="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
                 -

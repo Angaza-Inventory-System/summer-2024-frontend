@@ -2,37 +2,29 @@ import React, { useState } from "react";
 import Field from "./Field";
 import Cookies from "js-cookie";
 
-interface Props {
-  setToken: any;
-  token: string;
-}
-function Login({ token, setToken }: Props) {
-  const [email, setEmail] = useState("");
+function Login() {
+  const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-
   const add = (event: React.FormEvent) => {
     event.preventDefault();
-    const requestOptions = {
+    fetch("http://127.0.0.1:8000/authen/login/", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        email: email,
+        username: user,
         password: password,
       }),
-    };
-    fetch("http://127.0.0.1:8000/devices/devices/", requestOptions)
+    })
       .then((response) => response.json())
-      .then((response) => {
-        console.log(response);
-      })
-      .then((response) => {
-        setToken(response);
+      .then((json) => {
+        Cookies.set("token", json.tokens.access_token, {
+          expires: 7,
+          secure: true,
+        });
       });
   };
   //sets stores JWT token as cookies
-  Cookies.set("token", token, { expires: 7, secure: true });
-  console.log(token);
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
@@ -43,9 +35,9 @@ function Login({ token, setToken }: Props) {
           <h1 className="pb-10 pt-10 text-center text-3xl font-extrabold text-[#00008B]">
             Angaza Technology Literacy Center
           </h1>
-          <form className="mx-auto w-full max-w-sm" onSubmit={add}>
+          <form className="mx-auto w-full max-w-sm">
             <div className="flex flex-col pt-10">
-              <Field text="Email" setValue={setEmail} />
+              <Field text="Username" setValue={setUser} />
               <label
                 htmlFor="password"
                 className="font-extrabold text-[#00008B]"
