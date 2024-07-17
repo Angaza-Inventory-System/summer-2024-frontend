@@ -6,7 +6,33 @@ interface Props {
   jsonHeaders: any;
 }
 const Form = ({ jsonHeaders }: Props) => {
+  const [id, setId] = useState<string>();
+  const [type, setType] = useState<string>();
+  const [make, setMake] = useState<string>();
+  const [model, setModel] = useState<string>();
+  const [serialNumber, setSerialNumber] = useState<string>();
+  const [macId, setMacId] = useState<string>();
+  const [manufacture, setManufacture] = useState<number>();
+  const [shipmentDate, setShipmentDate] = useState<Dayjs>(dayjs());
+  const [dateReceived, setDateReceived] = useState<Dayjs>(dayjs());
+  const [receivedBy, setReceivedBy] = useState<number>();
+  const [physicalCondition, setPhysicalCondition] = useState<string>();
+  const [specifications, setSpecifications] = useState<string>();
+  const [operatingSystem, setOperatingSystem] = useState<string>();
+  const [accessories, setAccessories] = useState<string>();
+  const [donorID, setDonorID] = useState<number>();
+  const [dateOfDonation, setDateOfDonation] = useState<Dayjs>(dayjs());
+  const [value, setValue] = useState<string>();
+  const [location, setLocation] = useState<number>();
+  const [assignedUser, setAssignedUser] = useState<number>();
+  const [status, setStatus] = useState<string>();
+  const [distributor, setDistributor] = useState<string>();
+  const [warrantyServiceInfo, setWarrantyServiceInfo] = useState<string>();
+  const [notes, setNotes] = useState<string>();
+  const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
+
   const url = "http://127.0.0.1:8000";
+
   const add = (event: React.FormEvent) => {
     event.preventDefault();
     const requestOptions = {
@@ -44,30 +70,6 @@ const Form = ({ jsonHeaders }: Props) => {
         setErrors(response);
       });
   };
-  const [id, setId] = useState<string>();
-  const [type, setType] = useState<string>();
-  const [make, setMake] = useState<string>();
-  const [model, setModel] = useState<string>();
-  const [serialNumber, setSerialNumber] = useState<string>();
-  const [macId, setMacId] = useState<string>();
-  const [manufacture, setManufacture] = useState<number>();
-  const [shipmentDate, setShipmentDate] = useState<Dayjs>(dayjs());
-  const [dateReceived, setDateReceived] = useState<Dayjs>(dayjs());
-  const [receivedBy, setReceivedBy] = useState<number>();
-  const [physicalCondition, setPhysicalCondition] = useState<string>();
-  const [specifications, setSpecifications] = useState<string>();
-  const [operatingSystem, setOperatingSystem] = useState<string>();
-  const [accessories, setAccessories] = useState<string>();
-  const [donorID, setDonorID] = useState<number>();
-  const [dateOfDonation, setDateOfDonation] = useState<Dayjs>(dayjs());
-  const [value, setValue] = useState<string>();
-  const [location, setLocation] = useState<number>();
-  const [assignedUser, setAssignedUser] = useState<number>();
-  const [status, setStatus] = useState<string>();
-  const [distributor, setDistributor] = useState<string>();
-  const [warrantyServiceInfo, setWarrantyServiceInfo] = useState<string>();
-  const [notes, setNotes] = useState<string>();
-  const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
 
   try {
     return (

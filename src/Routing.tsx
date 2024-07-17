@@ -7,8 +7,8 @@ import Cookies from "js-cookie";
 
 function Routing() {
   const url = "http://127.0.0.1:8000";
-  var token = Cookies.get("token");
-  var jsonHeaders = {
+  let token = Cookies.get("token");
+  let jsonHeaders = {
     "Content-Type": "application/json",
     Host: { url },
     Authorization: `Bearer ${token}`,

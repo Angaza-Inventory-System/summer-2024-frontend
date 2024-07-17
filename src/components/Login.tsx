@@ -36,13 +36,21 @@ function Login() {
   return (
     <>
       <div className="flex w-screen justify-center">
-        <div className="absolute mx-auto h-screen w-1/4">
+        <div className="absolute mx-auto h-screen">
           <h1 className="pb-10 pt-10 text-center text-3xl font-extrabold text-[#00008B]">
             Angaza Technology Literacy Center
           </h1>
           <form className="mx-auto w-full max-w-sm" onSubmit={add}>
             <div className="flex flex-col pt-10">
-              <Field text="Username" setValue={setUser} />
+              <label className="font-extrabold text-[#00008B]">Username</label>
+              <div className="relative">
+                <input
+                  type="text"
+                  className="rounded-md border-none pr-48"
+                  onChange={(e) => setUser(e.target.value)}
+                  value={user}
+                />
+              </div>
               <label
                 htmlFor="password"
                 className="font-extrabold text-[#00008B]"
@@ -58,7 +66,7 @@ function Login() {
                 />
                 <button
                   type="button"
-                  className="absolute inset-y-0 right-0 flex items-center pr-2"
+                  className="absolute inset-y-0 right-3 flex items-center"
                   onClick={toggleShowPassword}
                 >
                   {showPassword ? "Hide" : "Show"}
