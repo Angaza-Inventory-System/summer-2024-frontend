@@ -11,6 +11,8 @@ import { Dropdown } from "flowbite-react";
 import { PaginationButton } from "./PaginationButton";
 import { createColumnHelper } from "@tanstack/react-table";
 import { Details } from "./Details";
+import Cookies from "js-cookie";
+import QRGrid from "./QRGrid";
 
 interface Props {
   url: string;
@@ -222,6 +224,8 @@ function Table({ url, jsonHeaders }: Props) {
   }
 
   const [refetch, setRefetch] = useState(false);
+  const [search, setSearch] = useState("");
+  const [selectedFilter, setSelectedFilter] = useState("device_id");
 
   const del = async () => {
     const selected = Object.keys(rowSelection);
@@ -233,15 +237,18 @@ function Table({ url, jsonHeaders }: Props) {
         }),
       ),
     );
-    setRefetch((prev) => !prev);
+    setRefetch(!refetch);
   };
   useEffect(() => {
     const getTable = () => {
       // @ts-ignore
-      fetch(`${url}/devices/devices?page=${pagination}&page_size=8`, {
-        method: "GET",
-        headers: jsonHeaders,
-      })
+      fetch(
+        `${url}/devices/devices?${selectedFilter}=${search}&page=${pagination}&page_size=14`,
+        {
+          method: "GET",
+          headers: jsonHeaders,
+        },
+      )
         .then((response) => response.json())
         .then((json) => {
           setRows(json.results);
@@ -256,6 +263,9 @@ function Table({ url, jsonHeaders }: Props) {
   }, [pagination, refetch]);
   return (
     <>
+      <div className="hidden print:block">
+        <QRGrid qrCodes={Object.keys(rowSelection)} />
+      </div>
       <div className="w-full p-2">
         {showPopup && (
           <Details
@@ -269,6 +279,10 @@ function Table({ url, jsonHeaders }: Props) {
             <div className="pr-2">
               <button
                 type="button"
+                onClick={() => {
+                  Cookies.remove("token", { path: "" });
+                  window.location.reload();
+                }}
                 className="flex h-10 items-center justify-center rounded-lg border border-gray-300 bg-white leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
                 Sign Out
@@ -323,8 +337,10 @@ function Table({ url, jsonHeaders }: Props) {
                   >
                     <label className="flex items-center">
                       <input
-                        name="filter"
                         type="radio"
+                        checked={selectedFilter === column.id}
+                        // @ts-ignore
+                        onChange={() => setSelectedFilter(column.id)}
                         className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                       />
                       <span className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -341,7 +357,7 @@ function Table({ url, jsonHeaders }: Props) {
             <div className="relative h-full pl-2">
               <input
                 type="text"
-                id="table-search"
+                onChange={(e) => setSearch(e.target.value)}
                 className="block h-10 w-60 rounded-s-lg border border-gray-300 bg-gray-50 ps-8 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                 placeholder="Search for items"
               />
@@ -353,6 +369,7 @@ function Table({ url, jsonHeaders }: Props) {
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
+                  onClick={() => setRefetch(!refetch)}
                   viewBox="0 0 20 20"
                 >
                   <path
@@ -427,6 +444,7 @@ function Table({ url, jsonHeaders }: Props) {
           <div className="flex">
             <button
               type="button"
+              onClick={() => window.print()}
               className="flex h-8 items-center justify-center rounded-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
             >
               Prnt

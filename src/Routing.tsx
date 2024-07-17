@@ -7,27 +7,36 @@ import Cookies from "js-cookie";
 
 function Routing() {
   const url = "http://127.0.0.1:8000";
+  var token = Cookies.get("token");
   var jsonHeaders = {
     Host: { url },
-    Authorization: `Bearer ${Cookies.get("token")}`,
+    Authorization: `Bearer ${token}`,
   };
   //<Form />
   return (
     <BrowserRouter>
       <Routes>
-        <Route index element={<Table url={url} jsonHeaders={jsonHeaders} />} />
+        <Route
+          index
+          element={
+            !token ? <Login /> : <Table url={url} jsonHeaders={jsonHeaders} />
+          }
+        />
         <Route path="form" element={<></>} />
         <Route
           path=":id"
           element={
-            <Details
-              rowData={undefined}
-              onClose={() => {}}
-              jsonHeaders={jsonHeaders}
-            />
+            !token ? (
+              <Login />
+            ) : (
+              <Details
+                rowData={undefined}
+                onClose={() => {}}
+                jsonHeaders={jsonHeaders}
+              />
+            )
           }
         />
-        <Route path="login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

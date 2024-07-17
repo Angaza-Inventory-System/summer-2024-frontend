@@ -6,36 +6,42 @@ function Login() {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const add = (event: React.FormEvent) => {
+
+  const add = async (event: React.FormEvent) => {
     event.preventDefault();
-    fetch("http://127.0.0.1:8000/authen/login/", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: user,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((json) => {
-        Cookies.set("token", json.tokens.access_token, {
-          expires: 7,
-          secure: true,
-        });
+    try {
+      const response = await fetch("http://127.0.0.1:8000/authen/login/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: user,
+          password: password,
+        }),
       });
+
+      const json = await response.json();
+      Cookies.set("token", json.tokens.access_token, {
+        expires: 7,
+        secure: true,
+      });
+    } catch (error) {
+      console.error("Login error:", error);
+    }
+    window.location.reload();
   };
-  //sets stores JWT token as cookies
+
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
   return (
     <>
       <div className="flex w-screen justify-center">
-        <div className="mx-auto' absolute h-screen w-1/4">
+        <div className="absolute mx-auto h-screen w-1/4">
           <h1 className="pb-10 pt-10 text-center text-3xl font-extrabold text-[#00008B]">
             Angaza Technology Literacy Center
           </h1>
-          <form className="mx-auto w-full max-w-sm">
+          <form className="mx-auto w-full max-w-sm" onSubmit={add}>
             <div className="flex flex-col pt-10">
               <Field text="Username" setValue={setUser} />
               <label
@@ -56,18 +62,12 @@ function Login() {
                   className="absolute inset-y-0 right-0 flex items-center pr-2"
                   onClick={toggleShowPassword}
                 >
-                  {" "}
-                  {showPassword ? (
-                    <i className="fas fa-eye-slash fa-2x"></i>
-                  ) : (
-                    <i className="fas fa-eye fa-2x"></i>
-                  )}{" "}
+                  {showPassword ? "Hide" : "Show"}
                 </button>
               </div>
               <button
                 type="submit"
                 className="duration-600 mt-5 h-8 rounded-full bg-blue-500 text-lg font-medium leading-4 text-white transition ease-in hover:scale-105 hover:bg-sky-700"
-                onClick={add}
               >
                 Sign In
               </button>
@@ -83,4 +83,5 @@ function Login() {
     </>
   );
 }
+
 export default Login;
