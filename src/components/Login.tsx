@@ -18,7 +18,6 @@ function Login() {
           password: password,
         }),
       });
-
       const json = await response.json();
       Cookies.set("token", json.tokens.access_token, {
         expires: 7,

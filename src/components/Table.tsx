@@ -13,6 +13,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { Details } from "./Details";
 import Cookies from "js-cookie";
 import QRGrid from "./QRGrid";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
   url: string;
@@ -226,7 +227,11 @@ function Table({ url, jsonHeaders }: Props) {
   const [refetch, setRefetch] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("device_id");
+  const navigate = useNavigate();
 
+  const nav = () => {
+    navigate("/form");
+  };
   const del = async () => {
     const selected = Object.keys(rowSelection);
     await Promise.all(
@@ -260,7 +265,7 @@ function Table({ url, jsonHeaders }: Props) {
     };
     getTable();
     table.resetRowSelection();
-  }, [pagination, refetch]);
+  }, [pagination, refetch, search, selectedFilter]);
   return (
     <>
       <div className="hidden print:block">
@@ -283,7 +288,7 @@ function Table({ url, jsonHeaders }: Props) {
                   Cookies.remove("token", { path: "" });
                   window.location.reload();
                 }}
-                className="flex h-10 items-center justify-center rounded-lg border border-gray-300 bg-white leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+                className="flex h-10 items-center justify-center rounded-lg border border-gray-300 bg-white px-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
                 Sign Out
               </button>
@@ -355,21 +360,12 @@ function Table({ url, jsonHeaders }: Props) {
               })}
             </Dropdown>
             <div className="relative h-full pl-2">
-              <input
-                type="text"
-                onChange={(e) => setSearch(e.target.value)}
-                className="block h-10 w-60 rounded-s-lg border border-gray-300 bg-gray-50 ps-8 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                placeholder="Search for items"
-              />
-            </div>
-            <div className="flex h-10 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
-              <div className="flex items-center">
+              <div className="rtl:inset-r-0 pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
                 <svg
                   className="h-4 w-4 text-gray-500 dark:text-gray-400"
                   aria-hidden="true"
                   xmlns="http://www.w3.org/2000/svg"
                   fill="none"
-                  onClick={() => setRefetch(!refetch)}
                   viewBox="0 0 20 20"
                 >
                   <path
@@ -381,6 +377,12 @@ function Table({ url, jsonHeaders }: Props) {
                   />
                 </svg>
               </div>
+              <input
+                type="text"
+                onChange={(e) => setSearch(e.target.value)}
+                className="block h-10 w-80 rounded-lg border border-gray-300 bg-gray-50 ps-10 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                placeholder="Search for items"
+              />
             </div>
           </div>
         </div>
@@ -452,6 +454,7 @@ function Table({ url, jsonHeaders }: Props) {
             <div className="flex pl-2">
               <button
                 type="button"
+                onClick={nav}
                 className="flex h-8 items-center justify-center rounded-s-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
                 +

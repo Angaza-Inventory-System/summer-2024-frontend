@@ -9,10 +9,10 @@ function Routing() {
   const url = "http://127.0.0.1:8000";
   var token = Cookies.get("token");
   var jsonHeaders = {
+    "Content-Type": "application/json",
     Host: { url },
     Authorization: `Bearer ${token}`,
   };
-  //<Form />
   return (
     <BrowserRouter>
       <Routes>
@@ -22,7 +22,10 @@ function Routing() {
             !token ? <Login /> : <Table url={url} jsonHeaders={jsonHeaders} />
           }
         />
-        <Route path="form" element={<></>} />
+        <Route
+          path="form"
+          element={!token ? <Login /> : <Form jsonHeaders={jsonHeaders} />}
+        />
         <Route
           path=":id"
           element={
