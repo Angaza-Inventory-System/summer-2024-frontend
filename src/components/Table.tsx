@@ -266,7 +266,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
     };
     getTable();
     table.resetRowSelection();
-  }, [pagination, refetch, search, selectedFilter]);
+  }, [pagination, refetch, selectedFilter]);
   return (
     <>
       <div className="hidden print:block">
@@ -330,62 +330,75 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
             </Dropdown>
           </div>
           <div className="flex h-full justify-self-end">
-            <Dropdown
-              label="Filter"
-              dismissOnClick={true}
-              theme={{ floating: { target: "h-10" } }}
-            >
-              {table.getAllLeafColumns().map((column) => {
-                if (column.id === "select" || column.id === "details")
-                  return null;
-                return (
-                  <div
-                    key={column.id}
-                    className="flex items-center hover:bg-slate-200"
-                  >
-                    <label className="flex items-center">
-                      <input
-                        type="radio"
-                        checked={selectedFilter === column.id}
-                        // @ts-ignore
-                        onChange={() => setSelectedFilter(column.id)}
-                        className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                      />
-                      <span className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                        {typeof column.columnDef.header === "function"
-                          ? // @ts-ignore
-                            flexRender(column.columnDef.header, { column })
-                          : column.columnDef.header}
-                      </span>
-                    </label>
-                  </div>
-                );
-              })}
-            </Dropdown>
-            <div className="relative h-full pl-2">
-              <div className="rtl:inset-r-0 pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3">
-                <svg
-                  className="h-4 w-4 text-gray-500 dark:text-gray-400"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 20 20"
+            <div className="flex w-96">
+              <div className="z-10 inline-flex flex-shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-700">
+                <Dropdown
+                  label="Filter"
+                  placement="bottom"
+                  dismissOnClick={true}
+                  theme={{ floating: { target: "h-10" } }}
+                  inline
                 >
-                  <path
-                    stroke="currentColor"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                  />
-                </svg>
+                  {table.getAllLeafColumns().map((column) => {
+                    if (column.id === "select" || column.id === "details")
+                      return null;
+                    return (
+                      <div
+                        key={column.id}
+                        className="flex items-center hover:bg-slate-200"
+                      >
+                        <label className="flex items-center">
+                          <input
+                            type="radio"
+                            checked={selectedFilter === column.id}
+                            // @ts-ignore
+                            onChange={() => setSelectedFilter(column.id)}
+                            className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
+                          />
+                          <span className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                            {typeof column.columnDef.header === "function"
+                              ? // @ts-ignore
+                                flexRender(column.columnDef.header, {
+                                  column,
+                                })
+                              : column.columnDef.header}
+                          </span>
+                        </label>
+                      </div>
+                    );
+                  })}
+                </Dropdown>
               </div>
-              <input
-                type="text"
-                onChange={(e) => setSearch(e.target.value)}
-                className="block h-10 w-80 rounded-lg border border-gray-300 bg-gray-50 ps-10 pt-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                placeholder="Search for items"
-              />
+              <div className="relative w-full">
+                <input
+                  type="text"
+                  onChange={(e) => setSearch(e.target.value)}
+                  className="z-20 block w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
+                  placeholder="Search"
+                />
+                <button
+                  type="button"
+                  onClick={() => setRefetch(!refetch)}
+                  className="absolute end-0 top-0 h-full rounded-e-lg border border-blue-700 bg-blue-700 p-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                >
+                  <svg
+                    className="h-4 w-4"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 20 20"
+                  >
+                    <path
+                      stroke="currentColor"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth="2"
+                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                    />
+                  </svg>
+                  <span className="sr-only">Search</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
@@ -452,7 +465,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
               onClick={() => window.print()}
               className="flex h-8 items-center justify-center rounded-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
             >
-              Prnt
+              Print Selection
             </button>
             <div className="flex pl-2">
               <button
@@ -460,14 +473,14 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                 onClick={nav}
                 className="flex h-8 items-center justify-center rounded-s-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
-                +
+                Add Device
               </button>
               <button
                 type="button"
                 onClick={del}
                 className="flex h-8 items-center justify-center rounded-e-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
-                -
+                Delete Selection
               </button>
             </div>
           </div>
