@@ -263,12 +263,13 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
     getTable();
     table.resetRowSelection();
   }, [pagination, refetch, selectedFilter]);
+
   return (
     <>
-      <div className="hidden print:block">
+      <div className="fixed hidden print:block">
         <QRGrid frontUrl={frontUrl} qrCodes={Object.keys(rowSelection)} />
       </div>
-      <div className="w-full p-2">
+      <div className="w-full p-2 print:hidden">
         {showPopup && (
           <Details
             backUrl={backUrl}
