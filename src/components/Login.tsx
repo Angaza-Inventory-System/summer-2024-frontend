@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import bg from "./better_better.png";
 
@@ -37,6 +37,10 @@ function Login({ backUrl }: Props) {
   const toggleShowPassword = () => {
     setShowPassword(!showPassword);
   };
+
+  useEffect(() => {
+    document.title = "Login";
+  }, []);
 
   return (
     <>

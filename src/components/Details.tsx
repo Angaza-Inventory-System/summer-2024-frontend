@@ -34,6 +34,10 @@ export const Details = ({
     };
     fetchData();
   }, [id, rowData]);
+
+  useEffect(() => {
+    if (id) document.title = `Device ${id}`;
+  }, []);
   return (
     <div
       className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-75"

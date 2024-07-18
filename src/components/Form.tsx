@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DateCalendarReferenceDate from "./DateCalendarReferenceDate";
 import dayjs, { Dayjs } from "dayjs";
 import { Navigate } from "react-router-dom";
@@ -71,7 +71,9 @@ const Form = ({ jsonHeaders, backUrl }: Props) => {
         setErrors(response);
       });
   };
-
+  useEffect(() => {
+    document.title = "Device Creation Form";
+  }, []);
   try {
     return (
       <>

@@ -263,7 +263,9 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
     getTable();
     table.resetRowSelection();
   }, [pagination, refetch, selectedFilter]);
-
+  useEffect(() => {
+    document.title = "Dashboard";
+  }, []);
   return (
     <>
       <div className="fixed hidden print:block">
