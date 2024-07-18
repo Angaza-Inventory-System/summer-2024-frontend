@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Cookies from "js-cookie";
+import bg from "./better_better.png";
+
 interface Props {
   backUrl: string;
 }
@@ -83,11 +85,7 @@ function Login({ backUrl }: Props) {
           </form>
         </div>
       </div>
-      <img
-        alt="a"
-        className="h-screen w-screen"
-        src="https://cdn.discordapp.com/attachments/1249232893268590684/1254204922782814310/better_better.png?ex=66905fdb&is=668f0e5b&hm=8710dc5025653c1800e362dac25dbe043baacfbfe9f00e3dbc08782e23872049&"
-      />
+      <img alt="a" className="h-screen w-screen" src={bg} />
     </>
   );
 }

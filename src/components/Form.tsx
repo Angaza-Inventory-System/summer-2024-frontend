@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DateCalendarReferenceDate from "./DateCalendarReferenceDate";
 import dayjs, { Dayjs } from "dayjs";
+import bg from "./better_better.png";
 
 interface Props {
   jsonHeaders: any;
@@ -77,7 +78,7 @@ const Form = ({ jsonHeaders, backUrl }: Props) => {
           <img
             alt="background"
             className="absolute inset-0 h-screen w-screen object-cover"
-            src="https://cdn.discordapp.com/attachments/1249232893268590684/1254204922782814310/better_better.png?ex=66905fdb&is=668f0e5b&hm=8710dc5025653c1800e362dac25dbe043baacfbfe9f00e3dbc08782e23872049&"
+            src={bg}
           />
           <div className="bg-white/2000 relative h-screen w-screen overflow-y-auto rounded-lg p-8">
             <form className="mx-auto w-full max-w-sm" onSubmit={add}>
