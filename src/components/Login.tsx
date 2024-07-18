@@ -9,6 +9,7 @@ function Login({ backUrl }: Props) {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [errors, setErrors] = useState(false);
 
   const add = async (event: React.FormEvent) => {
     event.preventDefault();
@@ -26,10 +27,11 @@ function Login({ backUrl }: Props) {
         expires: 7,
         secure: true,
       });
-    } catch (error) {
-      console.error("Login error:", error);
+      window.location.reload();
+    } catch (e) {
+      setErrors(true);
+      setPassword("");
     }
-    window.location.reload();
   };
 
   const toggleShowPassword = () => {
@@ -81,6 +83,11 @@ function Login({ backUrl }: Props) {
               >
                 Sign In
               </button>
+              {errors && (
+                <p className="mt-1 text-sm text-red-500">
+                  Invalid Username or Password
+                </p>
+              )}
             </div>
           </form>
         </div>
