@@ -8,7 +8,7 @@ interface Props {
   jsonHeaders: { "Content-Type": string; Authorization: string };
   backUrl: string;
 }
-const Form = ({ jsonHeaders, backUrl }: Props) => {
+const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
   const [id, setId] = useState<string>();
   const [type, setType] = useState<string>();
   const [make, setMake] = useState<string>();
@@ -17,13 +17,11 @@ const Form = ({ jsonHeaders, backUrl }: Props) => {
   const [macId, setMacId] = useState<string>();
   const [manufacture, setManufacture] = useState<number>();
   const [shipmentDate, setShipmentDate] = useState<Dayjs>(dayjs());
-  const [dateReceived, setDateReceived] = useState<Dayjs>(dayjs());
-  const [receivedBy, setReceivedBy] = useState<number>();
   const [physicalCondition, setPhysicalCondition] = useState<string>();
   const [specifications, setSpecifications] = useState<string>();
   const [operatingSystem, setOperatingSystem] = useState<string>();
   const [accessories, setAccessories] = useState<string>();
-  const [donorID, setDonorID] = useState<number>();
+  const [donor, setDonor] = useState<number>();
   const [dateOfDonation, setDateOfDonation] = useState<Dayjs>(dayjs());
   const [value, setValue] = useState<string>();
   const [location, setLocation] = useState<number>();
@@ -48,13 +46,11 @@ const Form = ({ jsonHeaders, backUrl }: Props) => {
         mac_id: macId,
         year_of_manufacture: manufacture,
         shipment_date: shipmentDate.format("YYYY-MM-DD"),
-        date_received: dateReceived.format("YYYY-MM-DD"),
-        received_by: receivedBy,
         physical_condition: physicalCondition,
         specifications: specifications,
         operating_system: operatingSystem,
         accessories: accessories,
-        donor: donorID,
+        donor: donor,
         date_of_donation: dateOfDonation.format("YYYY-MM-DD"),
         value: value,
         location: location,
@@ -86,25 +82,6 @@ const Form = ({ jsonHeaders, backUrl }: Props) => {
           <div className="bg-white/2000 relative h-screen w-screen overflow-y-auto rounded-lg p-8">
             <form className="mx-auto w-full max-w-sm" onSubmit={add}>
               <div className="flex flex-col space-y-4">
-                <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
-                    Device ID
-                  </label>
-                  <div className="flex flex-col">
-                    <input
-                      onChange={(e) => setId(e.target.value)}
-                      className={`${errors.device_id ? "border-2 border-red-500" : "border border-gray-300"} rounded p-2`}
-                    />
-                    {errors.device_id && (
-                      <p className="mt-1 text-sm text-red-500">
-                        {errors.device_id.map((msg, index) => (
-                          <span key={index}>{msg}</span>
-                        ))}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
                 <div className="mb-6 flex items-center">
                   <label className="w-32 font-bold text-[#3aaef1ec]">
                     Type
@@ -228,34 +205,6 @@ const Form = ({ jsonHeaders, backUrl }: Props) => {
                     setSelectedDate={setShipmentDate}
                   />
                 </div>
-                <div className="mb-6 flex">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
-                    Date Received
-                  </label>
-                  <DateCalendarReferenceDate
-                    selectedDate={dateReceived}
-                    setSelectedDate={setDateReceived}
-                  />
-                </div>
-
-                <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
-                    Received By
-                  </label>
-                  <div className="flex flex-col">
-                    <input
-                      onChange={(e) => setReceivedBy(parseInt(e.target.value))}
-                      className={`${errors.received_by ? "border-2 border-red-500" : "border border-gray-300"} rounded p-2`}
-                    />
-                    {errors.received_by && (
-                      <p className="mt-1 text-sm text-red-500">
-                        {errors.received_by.map((msg, index) => (
-                          <span key={index}>{msg}</span>
-                        ))}
-                      </p>
-                    )}
-                  </div>
-                </div>
 
                 <div className="mb-6 flex items-center">
                   <label className="w-32 font-bold text-[#3aaef1ec]">
@@ -335,11 +284,11 @@ const Form = ({ jsonHeaders, backUrl }: Props) => {
 
                 <div className="mb-6 flex items-center">
                   <label className="w-32 font-bold text-[#3aaef1ec]">
-                    Donor ID
+                    Donor
                   </label>
                   <div className="flex flex-col">
                     <input
-                      onChange={(e) => setDonorID(parseInt(e.target.value))}
+                      onChange={(e) => setDonor(parseInt(e.target.value))}
                       className={`${errors.donor ? "border-2 border-red-500" : "border border-gray-300"} rounded p-2`}
                     />
                     {errors.donor && (
@@ -442,25 +391,6 @@ const Form = ({ jsonHeaders, backUrl }: Props) => {
 
                 <div className="mb-6 flex items-center">
                   <label className="w-32 font-bold text-[#3aaef1ec]">
-                    Distributor
-                  </label>
-                  <div className="flex flex-col">
-                    <input
-                      onChange={(e) => setDistributor(e.target.value)}
-                      className={`${errors.distributor ? "border-2 border-red-500" : "border border-gray-300"} rounded p-2`}
-                    />
-                    {errors.distributor && (
-                      <p className="mt-1 text-sm text-red-500">
-                        {errors.distributor.map((msg, index) => (
-                          <span key={index}>{msg}</span>
-                        ))}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
                     Warranty Service Info
                   </label>
                   <div className="flex flex-col">
@@ -513,4 +443,4 @@ const Form = ({ jsonHeaders, backUrl }: Props) => {
     return <Navigate to="/" />;
   }
 };
-export default Form;
+export default DeviceForm;

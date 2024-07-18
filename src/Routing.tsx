@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Table from "./components/Table";
-import Form from "./components/Form";
+import DeviceForm from "./components/DeviceForm";
 import Login from "./components/Login";
 import { Details } from "./components/Details";
 import Cookies from "js-cookie";
@@ -36,7 +36,7 @@ function Routing() {
             !token ? (
               <Login backUrl={backUrl} />
             ) : (
-              <Form jsonHeaders={jsonHeaders} backUrl={backUrl} />
+              <DeviceForm jsonHeaders={jsonHeaders} backUrl={backUrl} />
             )
           }
         />

@@ -127,13 +127,6 @@ export const Details = ({
           <div className="font-bold">Assigned User:</div> {data?.assigned_user}
         </p>
         <QRCode value={`${frontUrl}/${data?.device_id}`} />
-        <button
-          type="button"
-          onClick={() => {}}
-          className="mt-4 rounded-md bg-gray-200 px-4 py-2 text-gray-800 hover:bg-gray-300"
-        >
-          Edit
-        </button>
       </div>
     </div>
   );
