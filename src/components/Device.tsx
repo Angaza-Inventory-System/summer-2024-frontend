@@ -1,0 +1,27 @@
+export type Device = {
+  select: string;
+  device_id: string;
+  type: string;
+  make: string;
+  model: string;
+  serial_number: string;
+  mac_id: string;
+  year_of_manufacture: number;
+  shipment_date: string;
+  date_received: string;
+  physical_condition: string;
+  specifications: string;
+  operating_system: string;
+  accessories: string;
+  date_of_donation: string;
+  value: number;
+  status: string;
+  distributor: number;
+  warranty_service_info: string;
+  notes: string;
+  received_by: number;
+  donor: string;
+  location: number;
+  assigned_user: number;
+  details: string;
+};

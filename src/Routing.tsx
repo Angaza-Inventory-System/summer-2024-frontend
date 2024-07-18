@@ -11,7 +11,6 @@ function Routing() {
   let token = Cookies.get("token");
   let jsonHeaders = {
     "Content-Type": "application/json",
-    Host: { backUrl },
     Authorization: `Bearer ${token}`,
   };
   return (

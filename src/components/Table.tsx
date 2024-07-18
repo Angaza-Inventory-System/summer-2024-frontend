@@ -3,8 +3,6 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
-  ColumnDef,
-  ColumnHelper,
 } from "@tanstack/react-table";
 import Checkbox from "./Checkbox";
 import { Dropdown } from "flowbite-react";
@@ -14,11 +12,12 @@ import { Details } from "./Details";
 import Cookies from "js-cookie";
 import QRGrid from "./QRGrid";
 import { useNavigate } from "react-router-dom";
+import { Device } from "./Device";
 
 interface Props {
   backUrl: string;
   frontUrl: string;
-  jsonHeaders: any;
+  jsonHeaders: { "Content-Type": string; Authorization: string };
 }
 
 function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
@@ -28,10 +27,10 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
   const [rows, setRows] = useState([]);
   const [pagination, setPagination] = useState(1);
   const [pageCount, setPage] = useState(0);
-  const [selectedRowData, setSelectedRowData] = useState(null);
+  const [selectedRowData, setSelectedRowData] = useState<Device>();
   const [rowSelection, setRowSelection] = useState<Record<string, boolean>>({});
   const [columnOrder, setColumnOrder] = useState<string[]>([]);
-  const columnHelper: ColumnHelper<any> = createColumnHelper();
+  const columnHelper = createColumnHelper<Device>();
   const [columnVisibility, setColumnVisibility] = useState<
     Record<string, boolean>
   >({
@@ -59,9 +58,8 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
     location: false,
     assigned_user: false,
   });
-  const colDef: ColumnDef<any>[] = [
-    {
-      id: "select",
+  const colDef = [
+    columnHelper.accessor("select", {
       size: 30,
       enableResizing: false,
       header: ({ table }) => (
@@ -83,7 +81,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
           }}
         />
       ),
-    },
+    }),
     columnHelper.accessor("device_id", {
       header: "Device ID",
       cell: (info) => info.getValue(),
@@ -176,8 +174,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
       header: "Assigned User",
       cell: (info) => info.getValue(),
     }),
-    {
-      id: "details",
+    columnHelper.accessor("details", {
       size: 62,
       header: "Details",
       cell: ({ row }) => (
@@ -192,7 +189,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
           ...
         </button>
       ),
-    },
+    }),
   ];
 
   const table = useReactTable({
@@ -247,7 +244,6 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
   };
   useEffect(() => {
     const getTable = () => {
-      // @ts-ignore
       fetch(
         `${backUrl}/devices/devices?${selectedFilter}=${search}&page=${pagination}&page_size=14`,
         {
@@ -319,7 +315,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                       />
                       <span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                         {typeof column.columnDef.header === "function"
-                          ? // @ts-ignore
+                          ? // @ts-ignore - works anyways
                             flexRender(column.columnDef.header, { column })
                           : column.columnDef.header}
                       </span>
@@ -351,16 +347,13 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                           <input
                             type="radio"
                             checked={selectedFilter === column.id}
-                            // @ts-ignore
                             onChange={() => setSelectedFilter(column.id)}
                             className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                           />
                           <span className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                             {typeof column.columnDef.header === "function"
-                              ? // @ts-ignore
-                                flexRender(column.columnDef.header, {
-                                  column,
-                                })
+                              ? // @ts-ignore - works anyways
+                                flexRender(column.columnDef.header, { column })
                               : column.columnDef.header}
                           </span>
                         </label>

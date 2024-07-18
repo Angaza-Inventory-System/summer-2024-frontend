@@ -1,7 +1,7 @@
 import QRCode from "react-qr-code";
 
 interface Props {
-  qrCodes: any;
+  qrCodes: string[];
   frontUrl: string;
 }
 

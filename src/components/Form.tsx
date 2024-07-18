@@ -4,7 +4,7 @@ import dayjs, { Dayjs } from "dayjs";
 import bg from "./better_better.png";
 
 interface Props {
-  jsonHeaders: any;
+  jsonHeaders: { "Content-Type": string; Authorization: string };
   backUrl: string;
 }
 const Form = ({ jsonHeaders, backUrl }: Props) => {
