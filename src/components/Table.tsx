@@ -16,11 +16,12 @@ import QRGrid from "./QRGrid";
 import { useNavigate } from "react-router-dom";
 
 interface Props {
-  url: string;
+  backUrl: string;
+  frontUrl: string;
   jsonHeaders: any;
 }
 
-function Table({ url, jsonHeaders }: Props) {
+function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
   //document.documentElement.classList.add("dark");
   const [showPopup, setShowPopup] = useState(false);
 
@@ -236,7 +237,7 @@ function Table({ url, jsonHeaders }: Props) {
     const selected = Object.keys(rowSelection);
     await Promise.all(
       selected.map((device_id) =>
-        fetch(`${url}/devices/${device_id}`, {
+        fetch(`${backUrl}/devices/${device_id}`, {
           method: "DELETE",
           headers: jsonHeaders,
         }),
@@ -248,7 +249,7 @@ function Table({ url, jsonHeaders }: Props) {
     const getTable = () => {
       // @ts-ignore
       fetch(
-        `${url}/devices/devices?${selectedFilter}=${search}&page=${pagination}&page_size=14`,
+        `${backUrl}/devices/devices?${selectedFilter}=${search}&page=${pagination}&page_size=14`,
         {
           method: "GET",
           headers: jsonHeaders,
@@ -269,14 +270,16 @@ function Table({ url, jsonHeaders }: Props) {
   return (
     <>
       <div className="hidden print:block">
-        <QRGrid qrCodes={Object.keys(rowSelection)} />
+        <QRGrid frontUrl={frontUrl} qrCodes={Object.keys(rowSelection)} />
       </div>
       <div className="w-full p-2">
         {showPopup && (
           <Details
+            backUrl={backUrl}
             rowData={selectedRowData}
             onClose={() => setShowPopup(false)}
             jsonHeaders={jsonHeaders}
+            frontUrl={frontUrl}
           />
         )}
         <div className="grid w-full grid-cols-2 pb-3">

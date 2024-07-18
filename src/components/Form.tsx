@@ -4,8 +4,9 @@ import dayjs, { Dayjs } from "dayjs";
 
 interface Props {
   jsonHeaders: any;
+  backUrl: string;
 }
-const Form = ({ jsonHeaders }: Props) => {
+const Form = ({ jsonHeaders, backUrl }: Props) => {
   const [id, setId] = useState<string>();
   const [type, setType] = useState<string>();
   const [make, setMake] = useState<string>();
@@ -30,8 +31,6 @@ const Form = ({ jsonHeaders }: Props) => {
   const [warrantyServiceInfo, setWarrantyServiceInfo] = useState<string>();
   const [notes, setNotes] = useState<string>();
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
-
-  const url = "http://127.0.0.1:8000";
 
   const add = (event: React.FormEvent) => {
     event.preventDefault();
@@ -64,7 +63,7 @@ const Form = ({ jsonHeaders }: Props) => {
         notes: notes,
       }),
     };
-    fetch(`${url}/devices/devices/`, requestOptions)
+    fetch(`${backUrl}/devices/devices/`, requestOptions)
       .then((response) => response.json())
       .then((response) => {
         setErrors(response);

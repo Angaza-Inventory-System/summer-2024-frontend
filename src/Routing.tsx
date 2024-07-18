@@ -6,11 +6,12 @@ import { Details } from "./components/Details";
 import Cookies from "js-cookie";
 
 function Routing() {
-  const url = "http://127.0.0.1:8000";
+  const backUrl = "http://127.0.0.1:8000";
+  const frontUrl = "http://localhost:5173";
   let token = Cookies.get("token");
   let jsonHeaders = {
     "Content-Type": "application/json",
-    Host: { url },
+    Host: { backUrl },
     Authorization: `Bearer ${token}`,
   };
   return (
@@ -19,23 +20,39 @@ function Routing() {
         <Route
           index
           element={
-            !token ? <Login /> : <Table url={url} jsonHeaders={jsonHeaders} />
+            !token ? (
+              <Login backUrl={backUrl} />
+            ) : (
+              <Table
+                backUrl={backUrl}
+                jsonHeaders={jsonHeaders}
+                frontUrl={frontUrl}
+              />
+            )
           }
         />
         <Route
           path="form"
-          element={!token ? <Login /> : <Form jsonHeaders={jsonHeaders} />}
+          element={
+            !token ? (
+              <Login backUrl={backUrl} />
+            ) : (
+              <Form jsonHeaders={jsonHeaders} backUrl={backUrl} />
+            )
+          }
         />
         <Route
           path=":id"
           element={
             !token ? (
-              <Login />
+              <Login backUrl={backUrl} />
             ) : (
               <Details
+                frontUrl={frontUrl}
                 rowData={undefined}
                 onClose={() => {}}
                 jsonHeaders={jsonHeaders}
+                backUrl={backUrl}
               />
             )
           }

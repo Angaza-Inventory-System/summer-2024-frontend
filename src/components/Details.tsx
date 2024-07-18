@@ -6,22 +6,27 @@ interface Props {
   rowData: any;
   onClose: () => void;
   jsonHeaders: any;
+  backUrl: string;
+  frontUrl: string;
 }
 
-export const Details = ({ rowData, onClose, jsonHeaders }: Props) => {
+export const Details = ({
+  rowData,
+  onClose,
+  jsonHeaders,
+  backUrl,
+  frontUrl,
+}: Props) => {
   const [data, setData] = useState(rowData || {});
   const { id } = useParams();
 
   useEffect(() => {
     const fetchData = async () => {
       if (!rowData) {
-        const response = await fetch(
-          `http://127.0.0.1:8000/devices/devices/${id}`,
-          {
-            method: "GET",
-            headers: jsonHeaders,
-          },
-        );
+        const response = await fetch(`${backUrl}/devices/devices/${id}`, {
+          method: "GET",
+          headers: jsonHeaders,
+        });
         const json = await response.json();
         setData(json);
       }
@@ -117,7 +122,7 @@ export const Details = ({ rowData, onClose, jsonHeaders }: Props) => {
         <p className="mb-2">
           <div className="font-bold">Assigned User:</div> {data.assigned_user}
         </p>
-        <QRCode value={"http://localhost:5173/" + id} />
+        <QRCode value={`${frontUrl}/${data.device_id}`} />
         <button
           type="button"
           onClick={() => {}}

@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import Field from "./Field";
 import Cookies from "js-cookie";
-
-function Login() {
+interface Props {
+  backUrl: string;
+}
+function Login({ backUrl }: Props) {
   const [user, setUser] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
@@ -10,7 +11,7 @@ function Login() {
   const add = async (event: React.FormEvent) => {
     event.preventDefault();
     try {
-      const response = await fetch("http://127.0.0.1:8000/authen/login/", {
+      const response = await fetch(`${backUrl}/authen/login/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
