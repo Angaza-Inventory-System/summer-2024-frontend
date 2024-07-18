@@ -34,8 +34,8 @@ const DateCalendarReferenceDate = ({
   selectedDate,
   setSelectedDate,
 }: Props) => {
-  const handleDateChange = (newDate: Dayjs) => {
-    setSelectedDate(newDate);
+  const handleDateChange = (newDate: Dayjs | null) => {
+    if (newDate !== null) setSelectedDate(newDate);
   };
 
   return (
@@ -47,7 +47,6 @@ const DateCalendarReferenceDate = ({
           ),
         }}
         value={selectedDate}
-        // @ts-ignore
         onChange={handleDateChange}
         format="YYYY-MM-DD"
       />

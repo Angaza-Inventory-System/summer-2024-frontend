@@ -76,7 +76,6 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
         <Checkbox
           {...{
             checked: row.getIsSelected(),
-            disabled: !row.getCanSelect(),
             indeterminate: row.getIsSomeSelected(),
             onChange: row.getToggleSelectedHandler(),
           }}
@@ -321,10 +320,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                           className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
                         />
                         <span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                          {typeof column.columnDef.header === "function"
-                            ? // @ts-ignore - works anyways
-                              flexRender(column.columnDef.header, { column })
-                            : column.columnDef.header}
+                          {column.columnDef.header?.toString()}
                         </span>
                       </label>
                     </div>
@@ -359,10 +355,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                             className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                           />
                           <span className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                            {typeof column.columnDef.header === "function"
-                              ? // @ts-ignore - works anyways
-                                flexRender(column.columnDef.header, { column })
-                              : column.columnDef.header}
+                            {column.columnDef.header?.toString()}
                           </span>
                         </label>
                       </div>
