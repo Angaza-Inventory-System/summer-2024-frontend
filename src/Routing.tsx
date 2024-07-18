@@ -31,7 +31,7 @@ function Routing() {
           }
         />
         <Route
-          path="form"
+          path="device-creation-form"
           element={
             !token ? (
               <Login backUrl={backUrl} />

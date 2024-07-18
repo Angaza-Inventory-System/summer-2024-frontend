@@ -1,6 +1,7 @@
 import { useState } from "react";
 import DateCalendarReferenceDate from "./DateCalendarReferenceDate";
 import dayjs, { Dayjs } from "dayjs";
+import { Navigate } from "react-router-dom";
 import bg from "./better_better.png";
 
 interface Props {
@@ -507,7 +508,7 @@ const Form = ({ jsonHeaders, backUrl }: Props) => {
       </>
     );
   } catch (e) {
-    return <div>Form submitted</div>;
+    return <Navigate to="/" />;
   }
 };
 export default Form;

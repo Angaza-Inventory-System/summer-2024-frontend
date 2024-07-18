@@ -228,7 +228,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
   const navigate = useNavigate();
 
   const nav = () => {
-    navigate("/form");
+    navigate("/device-creation-form");
   };
   const del = async () => {
     const selected = Object.keys(rowSelection);
