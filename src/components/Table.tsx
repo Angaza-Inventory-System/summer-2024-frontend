@@ -11,6 +11,7 @@ import { createColumnHelper } from "@tanstack/react-table";
 import { Details } from "./Details";
 import Cookies from "js-cookie";
 import QRGrid from "./QRGrid";
+import bg from "./better_better.png";
 import { useNavigate } from "react-router-dom";
 import { Device } from "./Device";
 
@@ -21,7 +22,7 @@ interface Props {
 }
 
 function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
-  //document.documentElement.classList.add("dark");
+  document.documentElement.classList.add("dark");
   const [showPopup, setShowPopup] = useState(false);
 
   const [rows, setRows] = useState([]);
@@ -271,7 +272,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
       <div className="fixed hidden print:block">
         <QRGrid frontUrl={frontUrl} qrCodes={Object.keys(rowSelection)} />
       </div>
-      <div className="w-full p-2 print:hidden">
+      <div className="absolute h-screen w-screen bg-black bg-opacity-70 p-2 print:hidden">
         {showPopup && (
           <Details
             backUrl={backUrl}
@@ -281,7 +282,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
             frontUrl={frontUrl}
           />
         )}
-        <div className="grid w-full grid-cols-2 pb-3">
+        <div className="grid w-full grid-cols-2 pt-10">
           <div className="flex h-full">
             <div className="pr-2">
               <button
@@ -295,38 +296,42 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                 Sign Out
               </button>
             </div>
-            <Dropdown
-              label="Columns"
-              dismissOnClick={false}
-              size="sm"
-              theme={{ floating: { target: "h-10 w-[100px]" } }}
-            >
-              {table.getAllLeafColumns().map((column) => {
-                if (column.id === "select" || column.id === "details")
-                  return null;
-                return (
-                  <div
-                    key={column.id}
-                    className="flex items-center hover:bg-slate-200"
-                  >
-                    <label className="flex items-center">
-                      <input
-                        type="checkbox"
-                        checked={column.getIsVisible()}
-                        onChange={column.getToggleVisibilityHandler()}
-                        className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
-                      />
-                      <span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                        {typeof column.columnDef.header === "function"
-                          ? // @ts-ignore - works anyways
-                            flexRender(column.columnDef.header, { column })
-                          : column.columnDef.header}
-                      </span>
-                    </label>
-                  </div>
-                );
-              })}
-            </Dropdown>
+            <div className="flex h-10 items-center justify-center rounded-lg border border-gray-300 bg-white px-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+              <Dropdown
+                label="Columns"
+                dismissOnClick={false}
+                size="sm"
+                placement="bottom"
+                inline
+                theme={{ floating: { target: "h-10 w-[100px]" } }}
+              >
+                {table.getAllLeafColumns().map((column) => {
+                  if (column.id === "select" || column.id === "details")
+                    return null;
+                  return (
+                    <div
+                      key={column.id}
+                      className="flex items-center hover:bg-slate-200"
+                    >
+                      <label className="flex items-center">
+                        <input
+                          type="checkbox"
+                          checked={column.getIsVisible()}
+                          onChange={column.getToggleVisibilityHandler()}
+                          className="h-4 w-4 rounded border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-500 dark:bg-gray-600 dark:ring-offset-gray-700 dark:focus:ring-blue-600 dark:focus:ring-offset-gray-700"
+                        />
+                        <span className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                          {typeof column.columnDef.header === "function"
+                            ? // @ts-ignore - works anyways
+                              flexRender(column.columnDef.header, { column })
+                            : column.columnDef.header}
+                        </span>
+                      </label>
+                    </div>
+                  );
+                })}
+              </Dropdown>
+            </div>
           </div>
           <div className="flex h-full justify-self-end">
             <div className="flex w-96">
@@ -398,7 +403,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
             </div>
           </div>
         </div>
-        <div className="relative w-full overflow-x-auto shadow-md sm:rounded-lg">
+        <div className="no-scrollbar relative overflow-x-auto rounded-lg py-3">
           <table
             className="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right"
             style={{ ...colSizes, width: table.getTotalSize() }}
@@ -409,7 +414,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}
-                      className="relative bg-gray-50 px-6 py-3 text-gray-700 dark:bg-gray-700 dark:text-gray-400"
+                      className="relative overflow-hidden overflow-ellipsis bg-gray-50 px-6 py-3 text-gray-700 dark:bg-gray-700 dark:text-gray-400"
                       style={{
                         width: `calc(var(--header-${header.id}-size) * 1px)`,
                       }}
@@ -422,7 +427,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                         onDoubleClick={() => header.column.resetSize()}
                         onMouseDown={header.getResizeHandler()}
                         onTouchStart={header.getResizeHandler()}
-                        className={`absolute right-0 top-0 h-full w-1 cursor-col-resize select-none bg-blue-100 dark:bg-blue-900 ${header.id == "select" ? "" : "hover:bg-blue-300 dark:hover:bg-blue-800"}`}
+                        className={`absolute right-0 top-0 h-full w-1 cursor-col-resize select-none bg-black bg-opacity-30 ${header.id == "select" ? "" : "hover:bg-opacity-15"}`}
                       />
                     </th>
                   ))}
@@ -433,12 +438,12 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
               {table.getRowModel().rows.map((row) => (
                 <tr
                   key={row.id}
-                  className="bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600"
+                  className="bg-white odd:bg-white even:bg-gray-50 hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 odd:dark:bg-gray-900 even:dark:bg-gray-800 dark:hover:bg-gray-600"
                 >
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
-                      className="px-6 py-4"
+                      className="overflow-hidden overflow-ellipsis px-6 py-4"
                       style={{
                         width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
                       }}
@@ -454,7 +459,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
             </tbody>
           </table>
         </div>
-        <div className="grid w-full grid-cols-2 pt-3">
+        <div className="grid w-full grid-cols-2">
           <div className="flex">
             <button
               type="button"
@@ -489,6 +494,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
           </div>
         </div>
       </div>
+      <img alt="a" className="h-screen w-screen print:hidden" src={bg} />
     </>
   );
 }
