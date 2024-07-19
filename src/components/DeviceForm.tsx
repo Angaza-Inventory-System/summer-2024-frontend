@@ -3,6 +3,7 @@ import DateCalendarReferenceDate from "./DateCalendarReferenceDate";
 import dayjs, { Dayjs } from "dayjs";
 import { Navigate } from "react-router-dom";
 import bg from "./better_better.png";
+import Cookies from "js-cookie";
 
 interface Props {
   jsonHeaders: { "Content-Type": string; Authorization: string };
@@ -62,12 +63,30 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
       }),
     };
     fetch(`${backUrl}/devices/devices/`, requestOptions)
-      .then((response) => response.json())
+      .then((response) => {
+        if (response.status === 403) {
+          Cookies.remove("token", { path: "" });
+          window.location.reload();
+          return;
+        }
+        return response.json();
+      })
       .then((response) => {
         setErrors(response);
       });
   };
   useEffect(() => {
+    fetch(`${backUrl}/devices/devices/`, {
+      method: "GET",
+      headers: jsonHeaders,
+    }).then((response) => {
+      if (response.status === 403) {
+        Cookies.remove("token", { path: "" });
+        window.location.reload();
+        return;
+      }
+    });
+
     document.title = "Device Creation Form";
   }, []);
   try {

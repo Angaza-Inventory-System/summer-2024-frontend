@@ -25,7 +25,7 @@ export function PaginationButton({ index, setPage, pageCount }: Props) {
         {"<"}
       </button>
       <div className="flex h-8 items-center justify-center border border-gray-300 bg-white px-3 leading-tight text-gray-500 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400">
-        {`Page "${index}/${pageCount}`}
+        {`Page ${index}/${pageCount}`}
       </div>
       <button
         type="button"

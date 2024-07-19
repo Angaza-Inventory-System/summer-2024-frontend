@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import QRCode from "react-qr-code";
 import { Device } from "./Device";
+import Cookies from "js-cookie";
 
 interface Props {
   rowData: Device | undefined;
@@ -20,7 +21,6 @@ export const Details = ({
 }: Props) => {
   const [data, setData] = useState(rowData || undefined);
   const { id } = useParams();
-
   useEffect(() => {
     const fetchData = async () => {
       if (!rowData) {
@@ -28,6 +28,11 @@ export const Details = ({
           method: "GET",
           headers: jsonHeaders,
         });
+        if (response.status === 403) {
+          Cookies.remove("token", { path: "" });
+          window.location.reload();
+          return;
+        }
         const json = await response.json();
         setData(json);
       }

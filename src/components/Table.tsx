@@ -224,10 +224,15 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
   const [refetch, setRefetch] = useState(false);
   const [search, setSearch] = useState("");
   const [selectedFilter, setSelectedFilter] = useState("device_id");
+  const [selectedHeader, setSelectedHeader] = useState("Device ID");
   const navigate = useNavigate();
 
   const nav = () => {
     navigate("/device-creation-form");
+  };
+  const redir = () => {
+    Cookies.remove("token", { path: "" });
+    window.location.reload();
   };
   const del = async () => {
     const selected = Object.keys(rowSelection);
@@ -250,7 +255,13 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
           headers: jsonHeaders,
         },
       )
-        .then((response) => response.json())
+        .then((response) => {
+          if (response.status === 403) {
+            redir();
+            return;
+          }
+          return response.json();
+        })
         .then((json) => {
           setRows(json.results);
           setPage(json.total_pages);
@@ -285,10 +296,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
             <div className="pr-2">
               <button
                 type="button"
-                onClick={() => {
-                  Cookies.remove("token", { path: "" });
-                  window.location.reload();
-                }}
+                onClick={redir}
                 className="flex h-10 items-center justify-center rounded-lg border border-gray-300 bg-white px-2 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
               >
                 Sign Out
@@ -332,10 +340,10 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
             <div className="flex w-96">
               <div className="z-10 inline-flex flex-shrink-0 items-center rounded-s-lg border border-gray-300 bg-gray-100 px-4 py-2.5 text-center text-sm font-medium text-gray-900 hover:bg-gray-200 focus:outline-none focus:ring-4 focus:ring-gray-100 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-700">
                 <Dropdown
-                  label="Filter"
+                  label={selectedHeader}
                   placement="bottom"
                   dismissOnClick
-                  theme={{ floating: { target: "h-10" } }}
+                  theme={{ floating: { target: "h-full" } }}
                   inline
                 >
                   {table.getAllLeafColumns().map((column) => {
@@ -350,7 +358,12 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                           <input
                             type="radio"
                             checked={selectedFilter === column.id}
-                            onChange={() => setSelectedFilter(column.id)}
+                            onChange={() => {
+                              setSelectedFilter(column.id);
+                              setSelectedHeader(
+                                column.columnDef.header?.toString() ?? "",
+                              );
+                            }}
                             className="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300"
                           />
                           <span className="mx-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -366,32 +379,32 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                 <input
                   type="text"
                   onChange={(e) => setSearch(e.target.value)}
-                  className="z-20 block w-full rounded-e-lg border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
+                  className="z-20 block h-full w-full border border-s-2 border-gray-300 border-s-gray-50 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500"
                   placeholder="Search"
                 />
-                <button
-                  type="button"
-                  onClick={() => setRefetch(!refetch)}
-                  className="absolute end-0 top-0 h-full rounded-e-lg border border-blue-700 bg-blue-700 p-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-                >
-                  <svg
-                    className="h-4 w-4"
-                    aria-hidden="true"
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 20 20"
-                  >
-                    <path
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
-                    />
-                  </svg>
-                  <span className="sr-only">Search</span>
-                </button>
               </div>
+              <button
+                type="button"
+                onClick={() => setRefetch(!refetch)}
+                className="h-full rounded-e-lg bg-blue-700 p-2.5 text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-2 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                <svg
+                  className="h-4 w-4"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+                <span className="sr-only">Search</span>
+              </button>
             </div>
           </div>
         </div>
