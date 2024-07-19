@@ -415,7 +415,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                         header.column.columnDef.header,
                         header.getContext(),
                       )}
-                      <div
+                      <button
                         onDoubleClick={() => header.column.resetSize()}
                         onMouseDown={header.getResizeHandler()}
                         onTouchStart={header.getResizeHandler()}
