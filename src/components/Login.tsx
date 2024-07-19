@@ -6,7 +6,7 @@ interface Props {
   backUrl: string;
 }
 function Login({ backUrl }: Props) {
-  const [user, setUser] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState(false);
@@ -18,8 +18,8 @@ function Login({ backUrl }: Props) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          username: user,
-          password: password,
+          username,
+          password,
         }),
       });
       const json = await response.json();
@@ -51,13 +51,18 @@ function Login({ backUrl }: Props) {
           </h1>
           <form className="mx-auto w-full max-w-sm" onSubmit={add}>
             <div className="flex flex-col pt-10">
-              <label className="font-extrabold text-[#00008B]">Username</label>
+              <label
+                htmlFor="username"
+                className="font-extrabold text-[#00008B]"
+              >
+                Username
+              </label>
               <div className="relative">
                 <input
                   type="text"
                   className="rounded-md border-none pr-48"
-                  onChange={(e) => setUser(e.target.value)}
-                  value={user}
+                  onChange={(e) => setUsername(e.target.value)}
+                  value={username}
                 />
               </div>
               <label

@@ -39,26 +39,26 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
       headers: jsonHeaders,
       body: JSON.stringify({
         device_id: id,
-        type: type,
-        make: make,
-        model: model,
+        type,
+        make,
+        model,
         serial_number: serialNumber,
         mac_id: macId,
         year_of_manufacture: manufacture,
         shipment_date: shipmentDate.format("YYYY-MM-DD"),
         physical_condition: physicalCondition,
-        specifications: specifications,
+        specifications,
         operating_system: operatingSystem,
-        accessories: accessories,
-        donor: donor,
+        accessories,
+        donor,
         date_of_donation: dateOfDonation.format("YYYY-MM-DD"),
-        value: value,
-        location: location,
+        value,
+        location,
         assigned_user: assignedUser,
-        status: status,
-        distributor: distributor,
+        status,
+        distributor,
         warranty_service_info: warrantyServiceInfo,
-        notes: notes,
+        notes,
       }),
     };
     fetch(`${backUrl}/devices/devices/`, requestOptions)
@@ -83,7 +83,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
             <form className="mx-auto w-full max-w-sm" onSubmit={add}>
               <div className="flex flex-col space-y-4">
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="type"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Type
                   </label>
                   <div className="flex flex-col">
@@ -102,7 +105,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="make"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Make
                   </label>
                   <div className="flex flex-col">
@@ -121,7 +127,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="model"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Model
                   </label>
                   <div className="flex flex-col">
@@ -140,7 +149,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="serial number"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Serial Number
                   </label>
                   <div className="flex flex-col">
@@ -159,7 +171,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="mac ID"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Mac ID
                   </label>
                   <div className="flex flex-col">
@@ -178,7 +193,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="year of manufacture"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Year of Manufacture
                   </label>
                   <div className="flex flex-col">
@@ -197,7 +215,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="shipment date"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Shipment Date
                   </label>
                   <DateCalendarReferenceDate
@@ -207,7 +228,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="physical condition"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Physical Condition
                   </label>
                   <div className="flex flex-col">
@@ -226,7 +250,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="specifications"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Specifications
                   </label>
                   <div className="flex flex-col">
@@ -245,7 +272,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="operating system"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Operating System
                   </label>
                   <div className="flex flex-col">
@@ -264,7 +294,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="accessories"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Accessories
                   </label>
                   <div className="flex flex-col">
@@ -283,7 +316,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="donor"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Donor
                   </label>
                   <div className="flex flex-col">
@@ -302,7 +338,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="date of donation"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Date Of Donation
                   </label>
                   <DateCalendarReferenceDate
@@ -312,7 +351,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="value"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Value
                   </label>
                   <div className="flex flex-col">
@@ -331,7 +373,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="location"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Location
                   </label>
                   <div className="flex flex-col">
@@ -350,7 +395,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="assigned user"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Assigned User
                   </label>
                   <div className="flex flex-col">
@@ -371,7 +419,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="status"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Status
                   </label>
                   <div className="flex flex-col">
@@ -390,7 +441,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="warranty service info"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Warranty Service Info
                   </label>
                   <div className="flex flex-col">
@@ -409,7 +463,10 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                 </div>
 
                 <div className="mb-6 flex items-center">
-                  <label className="w-32 font-bold text-[#3aaef1ec]">
+                  <label
+                    htmlFor="notes"
+                    className="w-32 font-bold text-[#3aaef1ec]"
+                  >
                     Notes
                   </label>
                   <div className="flex flex-col">

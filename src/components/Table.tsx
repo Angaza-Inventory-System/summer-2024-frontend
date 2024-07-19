@@ -3,11 +3,11 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  createColumnHelper,
 } from "@tanstack/react-table";
 import Checkbox from "./Checkbox";
 import { Dropdown } from "flowbite-react";
 import { PaginationButton } from "./PaginationButton";
-import { createColumnHelper } from "@tanstack/react-table";
 import { Details } from "./Details";
 import Cookies from "js-cookie";
 import QRGrid from "./QRGrid";
@@ -216,8 +216,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
 
   const headers = table.getFlatHeaders();
   const colSizes: { [key: string]: number } = {};
-  for (let i = 0; i < headers.length; i++) {
-    const header = headers[i]!;
+  for (const header of headers) {
     colSizes[`--header-${header.id}-size`] = header.getSize();
     colSizes[`--col-${header.column.id}-size`] = header.column.getSize();
   }
@@ -335,7 +334,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                 <Dropdown
                   label="Filter"
                   placement="bottom"
-                  dismissOnClick={true}
+                  dismissOnClick
                   theme={{ floating: { target: "h-10" } }}
                   inline
                 >
@@ -420,7 +419,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                         onDoubleClick={() => header.column.resetSize()}
                         onMouseDown={header.getResizeHandler()}
                         onTouchStart={header.getResizeHandler()}
-                        className={`absolute right-0 top-0 h-full w-1 cursor-col-resize select-none bg-black bg-opacity-30 ${header.id == "select" ? "" : "hover:bg-opacity-15"}`}
+                        className={`absolute right-0 top-0 h-full w-1 cursor-col-resize select-none bg-black bg-opacity-30 ${header.id === "select" ? "" : "hover:bg-opacity-15"}`}
                       />
                     </th>
                   ))}

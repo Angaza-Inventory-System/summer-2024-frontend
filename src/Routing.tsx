@@ -8,8 +8,8 @@ import Cookies from "js-cookie";
 function Routing() {
   const backUrl = "http://127.0.0.1:8000";
   const frontUrl = "http://localhost:5173";
-  let token = Cookies.get("token");
-  let jsonHeaders = {
+  const token = Cookies.get("token");
+  const jsonHeaders = {
     "Content-Type": "application/json",
     Authorization: `Bearer ${token}`,
   };
@@ -49,7 +49,9 @@ function Routing() {
               <Details
                 frontUrl={frontUrl}
                 rowData={undefined}
-                onClose={() => {}}
+                onClose={() => {
+                  //is page no need for close
+                }}
                 jsonHeaders={jsonHeaders}
                 backUrl={backUrl}
               />

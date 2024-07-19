@@ -42,10 +42,14 @@ export const Details = ({
     <div
       className="fixed left-0 top-0 z-50 flex h-full w-full items-center justify-center bg-gray-800 bg-opacity-75"
       onClick={onClose}
+      aria-hidden="true"
+      role="detailBackground"
     >
       <div
         className={`no-scrollbar overflow-y-auto rounded-lg bg-white p-6 shadow-lg ${rowData ? "h-1/3 w-96" : "h-full w-full"}`}
         onClick={(e) => e.stopPropagation()}
+        aria-hidden="true"
+        role="detailWindow"
       >
         <div className="mb-2">
           <div className="font-bold">Device ID:</div> {data?.device_id}
