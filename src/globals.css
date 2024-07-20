@@ -13,11 +13,3 @@
     scrollbar-width: none; /* Firefox */
   }
 }
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.overflow-ellipsis {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}

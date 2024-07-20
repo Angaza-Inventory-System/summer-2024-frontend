@@ -39,7 +39,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
     type: true,
     make: true,
     model: true,
-    serial_number: false,
+    serial_number: true,
     mac_id: false,
     year_of_manufacture: false,
     shipment_date: true,
@@ -49,8 +49,8 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
     operating_system: true,
     accessories: false,
     date_of_donation: false,
-    value: false,
-    status: false,
+    value: true,
+    status: true,
     distributor: false,
     warranty_service_info: false,
     notes: true,
@@ -61,7 +61,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
   });
   const colDef = [
     columnHelper.accessor("select", {
-      size: 30,
+      size: 10,
       enableResizing: false,
       header: ({ table }) => (
         <Checkbox
@@ -83,111 +83,136 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
       ),
     }),
     columnHelper.accessor("device_id", {
+      minSize: 200,
       header: "Device ID",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("type", {
+      minSize: 200,
       header: "Type",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("make", {
+      minSize: 200,
       header: "Make",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("model", {
+      minSize: 200,
       header: "Model",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("serial_number", {
+      minSize: 200,
       header: "Serial Number",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("mac_id", {
+      minSize: 200,
       header: "Mac ID",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("year_of_manufacture", {
+      minSize: 200,
       header: "Year Of Manufacture",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("shipment_date", {
+      minSize: 200,
       header: "Shipment Date",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("date_received", {
+      minSize: 200,
       header: "Date Received",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("physical_condition", {
+      minSize: 200,
       header: "Physical Condition",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("specifications", {
+      minSize: 200,
       header: "Specifications",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("operating_system", {
+      minSize: 200,
       header: "Operation System",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("accessories", {
+      minSize: 200,
       header: "Accessories",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("date_of_donation", {
+      minSize: 200,
       header: "Date Of Donation",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("value", {
+      minSize: 200,
       header: "Value",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("status", {
+      minSize: 200,
       header: "Status",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("distributor", {
+      minSize: 200,
       header: "Distributor",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("warranty_service_info", {
+      minSize: 200,
       header: "Warranty Service Info",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("notes", {
+      minSize: 200,
       header: "Notes",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("received_by", {
+      minSize: 200,
       header: "Received By",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("donor", {
+      minSize: 200,
       header: "Donor",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("location", {
+      minSize: 200,
       header: "Location",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("assigned_user", {
+      minSize: 200,
       header: "Assigned User",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("details", {
-      size: 62,
+      size: 10,
       header: "Details",
       cell: ({ row }) => (
-        <button
-          type="button"
-          onClick={() => {
-            setSelectedRowData(row.original);
-            setShowPopup(true);
-          }}
-          className="flex h-8 items-center justify-center rounded-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
-        >
-          ...
-        </button>
+        <div className="flex justify-center">
+          <button
+            type="button"
+            onClick={() => {
+              setSelectedRowData(row.original);
+              setShowPopup(true);
+            }}
+            className="flex h-8 rounded-lg border border-gray-300 bg-white px-3 leading-tight text-gray-500 hover:bg-gray-100 hover:text-gray-700 dark:border-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white"
+          >
+            ...
+          </button>
+        </div>
       ),
     }),
   ];
@@ -195,7 +220,6 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
   const table = useReactTable({
     defaultColumn: {
       size: 200,
-      minSize: 66,
     },
     getRowId: (row) => row.device_id,
     data: rows,
@@ -408,7 +432,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
             </div>
           </div>
         </div>
-        <div className="no-scrollbar relative overflow-x-auto rounded-lg py-3">
+        <div className="no-scrollbar relative my-3 w-full overflow-x-auto rounded-lg dark:bg-gray-800">
           <table
             className="w-full text-left text-sm text-gray-500 dark:text-gray-400 rtl:text-right"
             style={{ ...colSizes, width: table.getTotalSize() }}
@@ -419,7 +443,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                   {headerGroup.headers.map((header) => (
                     <th
                       key={header.id}
-                      className="relative overflow-hidden overflow-ellipsis bg-gray-50 px-6 py-3 text-gray-700 dark:bg-gray-700 dark:text-gray-400"
+                      className="relative whitespace-nowrap bg-gray-50 px-6 py-3 text-gray-700 dark:bg-gray-700 dark:text-gray-400"
                       style={{
                         width: `calc(var(--header-${header.id}-size) * 1px)`,
                       }}
@@ -448,15 +472,20 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                   {row.getVisibleCells().map((cell) => (
                     <td
                       key={cell.id}
-                      className="overflow-hidden overflow-ellipsis px-6 py-4"
+                      className="px-6 py-4"
                       style={{
                         width: `calc(var(--col-${cell.column.id}-size) * 1px)`,
                       }}
                     >
-                      {flexRender(
-                        cell.column.columnDef.cell,
-                        cell.getContext(),
-                      )}
+                      <div
+                        className="no-scrollbar overflow-x-auto"
+                        style={{ maxHeight: "32px" }}
+                      >
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext(),
+                        )}
+                      </div>
                     </td>
                   ))}
                 </tr>

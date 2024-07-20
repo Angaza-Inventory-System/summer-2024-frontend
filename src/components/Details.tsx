@@ -51,7 +51,7 @@ export const Details = ({
       role="dialog"
     >
       <div
-        className={`no-scrollbar overflow-y-auto rounded-lg bg-white p-6 shadow-lg ${rowData ? "h-1/3 w-96" : "h-full w-full"}`}
+        className={`no-scrollbar overflow-auto rounded-lg bg-white p-6 shadow-lg dark:bg-gray-900 dark:text-gray-400 ${rowData ? "h-1/3 w-96" : "h-2/3"}`}
         onClick={(e) => e.stopPropagation()}
         aria-hidden="true"
         role="dialog"
@@ -135,7 +135,21 @@ export const Details = ({
         <p className="mb-2">
           <div className="font-bold">Assigned User:</div> {data?.assigned_user}
         </p>
-        <QRCode value={`${frontUrl}/${data?.device_id}`} />
+        <div className="flex justify-center rounded-lg p-2 dark:bg-gray-400">
+          <QRCode
+            bgColor={
+              document.documentElement.classList.contains("dark")
+                ? "rgb(156 163 175 / var(--tw-text-opacity))"
+                : "white"
+            }
+            fgColor={
+              document.documentElement.classList.contains("dark")
+                ? "rgb(17 24 39 / var(--tw-bg-opacity))"
+                : "black"
+            }
+            value={`${frontUrl}/${data?.device_id}`}
+          />
+        </div>
       </div>
     </div>
   );
