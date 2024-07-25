@@ -28,7 +28,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
   const [value, setValue] = useState<string>();
   const [warehouse, setWarehouse] = useState<number>();
   const [assignedUser, setAssignedUser] = useState<number>();
-  
+
   const [distributor, setDistributor] = useState<string>();
   const [warrantyServiceInfo, setWarrantyServiceInfo] = useState<string>();
   const [notes, setNotes] = useState<string>();
@@ -105,28 +105,40 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   >
                     Type
                   </label>
-                    <div className="rounded p-2 border-gray-300 bg-white">
-                      <Dropdown
-                        label={type ? type : ""}
-                        dismissOnClick={false}
-                        placement="bottom"
-                        inline
-                        theme={{ floating: { target: "w-[199px]" } }}
+                  <div className="rounded p-2 border-gray-300 bg-white">
+                    <Dropdown
+                      label={type ? type : ""}
+                      dismissOnClick={false}
+                      placement="bottom"
+                      inline
+                      theme={{ floating: { target: "w-[199px]" } }}
+                    >
+                      <div
+                        onClick={() => setType("Computer")}
+                        className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
                       >
-                        <div onClick={() => setType("Computer")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
-                          Computer
-                        </div>
-                        <div onClick={() => setType("Tablet")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
-                          Tablet
-                        </div>
-                        <div onClick={() => setType("Phone")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
-                          Phone
-                        </div>
-                        <div onClick={() => setType("Other")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
-                          Other
-                        </div>
-                      </Dropdown>
-                    </div>
+                        Computer
+                      </div>
+                      <div
+                        onClick={() => setType("Tablet")}
+                        className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
+                      >
+                        Tablet
+                      </div>
+                      <div
+                        onClick={() => setType("Phone")}
+                        className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
+                      >
+                        Phone
+                      </div>
+                      <div
+                        onClick={() => setType("Other")}
+                        className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
+                      >
+                        Other
+                      </div>
+                    </Dropdown>
+                  </div>
                 </div>
 
                 <div className="mb-6 flex items-center">
@@ -246,31 +258,49 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                     Physical Condition
                   </label>
                   <Dropdown
-                        label={type ? type : ""}
-                        dismissOnClick={false}
-                        placement="bottom"
-                        inline
-                        theme={{ floating: { target: "w-[199px]" } }}
-                      >
-                        <div onClick={() => setType("New")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
-                          New
-                        </div>
-                        <div onClick={() => setType("Excellent")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
-                          Excellent
-                        </div>
-                        <div onClick={() => setType("Good")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
-                          Good
-                        </div>
-                        <div onClick={() => setType("Fair")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
-                          Fair
-                        </div>
-                        <div onClick={() => setType("Poor")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
-                          Poor
-                        </div>
-                        <div onClick={() => setType("Broken")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
-                          Broken
-                        </div>
-                      </Dropdown>
+                    label={type ? type : ""}
+                    dismissOnClick={false}
+                    placement="bottom"
+                    inline
+                    theme={{ floating: { target: "w-[199px]" } }}
+                  >
+                    <div
+                      onClick={() => setType("New")}
+                      className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
+                    >
+                      New
+                    </div>
+                    <div
+                      onClick={() => setType("Excellent")}
+                      className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
+                    >
+                      Excellent
+                    </div>
+                    <div
+                      onClick={() => setType("Good")}
+                      className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
+                    >
+                      Good
+                    </div>
+                    <div
+                      onClick={() => setType("Fair")}
+                      className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
+                    >
+                      Fair
+                    </div>
+                    <div
+                      onClick={() => setType("Poor")}
+                      className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
+                    >
+                      Poor
+                    </div>
+                    <div
+                      onClick={() => setType("Broken")}
+                      className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
+                    >
+                      Broken
+                    </div>
+                  </Dropdown>
                 </div>
 
                 <div className="mb-6 flex items-center">
@@ -442,7 +472,6 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
                 </div>
 
-
                 <div className="mb-6 flex items-center">
                   <label
                     htmlFor="notes"
@@ -461,7 +490,6 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                           <span key={index}>{msg}</span>
                         ))}
                       </p>
-                    
                     )}
                   </div>
                 </div>

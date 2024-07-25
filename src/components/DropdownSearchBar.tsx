@@ -1,6 +1,6 @@
-import React, { useState, useRef } from 'react';
-import { HiOutlineSearch, HiOutlineChevronDown } from 'react-icons/hi'; // Example: Icons for search and dropdown
-import clsx from 'clsx';
+import React, { useState, useRef } from "react";
+import { HiOutlineSearch, HiOutlineChevronDown } from "react-icons/hi"; // Example: Icons for search and dropdown
+import clsx from "clsx";
 
 interface Option {
   value: string;
@@ -16,22 +16,25 @@ interface SearchableDropdownProps {
 const DropdownSearchBar: React.FC<SearchableDropdownProps> = ({
   options,
   onSelect,
-  placeholder = 'Select an option...',
+  placeholder = "Select an option...",
 }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   // Close dropdown when clicking outside
   const handleClickOutside = (event: MouseEvent) => {
-    if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
       setIsOpen(false);
     }
   };
 
   // Filter options based on search term
-  const filteredOptions = options.filter(option =>
-    option.label.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredOptions = options.filter((option) =>
+    option.label.toLowerCase().includes(searchTerm.toLowerCase()),
   );
 
   // Handle selection
@@ -43,12 +46,12 @@ const DropdownSearchBar: React.FC<SearchableDropdownProps> = ({
   // Toggle dropdown visibility
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
-    setSearchTerm(''); // Clear search term when opening dropdown
+    setSearchTerm(""); // Clear search term when opening dropdown
   };
 
   // Handle key press events for accessibility
   const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === 'Enter') {
+    if (event.key === "Enter") {
       toggleDropdown();
     }
   };
@@ -79,13 +82,13 @@ const DropdownSearchBar: React.FC<SearchableDropdownProps> = ({
           </div>
           <div className="py-1">
             {filteredOptions.length > 0 ? (
-              filteredOptions.map(option => (
+              filteredOptions.map((option) => (
                 <div
                   key={option.value}
                   onClick={() => handleSelect(option.value)}
                   className={clsx(
-                    'px-4 py-2 cursor-pointer hover:bg-gray-100',
-                    option.value === searchTerm && 'bg-gray-100'
+                    "px-4 py-2 cursor-pointer hover:bg-gray-100",
+                    option.value === searchTerm && "bg-gray-100",
                   )}
                 >
                   {option.label}
