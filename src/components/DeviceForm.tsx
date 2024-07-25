@@ -34,6 +34,8 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
   const [notes, setNotes] = useState<string>();
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
 
+  document.documentElement.classList.remove("dark");
+
   const add = (event: React.FormEvent) => {
     event.preventDefault();
     const requestOptions = {
@@ -98,47 +100,49 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
           <div className="bg-white/2000 relative h-screen w-screen overflow-y-auto rounded-lg p-8">
             <form className="mx-auto w-full max-w-sm" onSubmit={add}>
               <div className="flex flex-col space-y-4">
-                <div className="mb-6 flex items-center">
+                <div className="flex items-center">
                   <label
                     htmlFor="type"
                     className="w-32 font-bold text-[#3aaef1ec]"
                   >
                     Type
                   </label>
-                  <div className="rounded p-2 border-gray-300 bg-white">
-                    <Dropdown
-                      label={type ? type : ""}
-                      dismissOnClick={false}
-                      placement="bottom"
-                      inline
-                      theme={{ floating: { target: "w-[199px]" } }}
+                  <Dropdown
+                    label={type ? type : ""}
+                    dismissOnClick={false}
+                    color="light"
+                    placement="bottom"
+                    theme={{
+                      floating: {
+                        target: "w-[199px] h-[42px]",
+                      },
+                    }}
+                  >
+                    <div
+                      onClick={() => setType("Computer")}
+                      className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
                     >
-                      <div
-                        onClick={() => setType("Computer")}
-                        className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
-                      >
-                        Computer
-                      </div>
-                      <div
-                        onClick={() => setType("Tablet")}
-                        className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
-                      >
-                        Tablet
-                      </div>
-                      <div
-                        onClick={() => setType("Phone")}
-                        className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
-                      >
-                        Phone
-                      </div>
-                      <div
-                        onClick={() => setType("Other")}
-                        className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
-                      >
-                        Other
-                      </div>
-                    </Dropdown>
-                  </div>
+                      Computer
+                    </div>
+                    <div
+                      onClick={() => setType("Tablet")}
+                      className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
+                    >
+                      Tablet
+                    </div>
+                    <div
+                      onClick={() => setType("Phone")}
+                      className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
+                    >
+                      Phone
+                    </div>
+                    <div
+                      onClick={() => setType("Other")}
+                      className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
+                    >
+                      Other
+                    </div>
+                  </Dropdown>
                 </div>
 
                 <div className="mb-6 flex items-center">
@@ -258,44 +262,48 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                     Physical Condition
                   </label>
                   <Dropdown
-                    label={type ? type : ""}
+                    label={physicalCondition ? physicalCondition : ""}
                     dismissOnClick={false}
                     placement="bottom"
-                    inline
-                    theme={{ floating: { target: "w-[199px]" } }}
+                    color="light"
+                    theme={{
+                      floating: {
+                        target: "w-[199px] h-[42px]",
+                      },
+                    }}
                   >
                     <div
-                      onClick={() => setType("New")}
+                      onClick={() => setPhysicalCondition("New")}
                       className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
                     >
                       New
                     </div>
                     <div
-                      onClick={() => setType("Excellent")}
+                      onClick={() => setPhysicalCondition("Excellent")}
                       className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
                     >
                       Excellent
                     </div>
                     <div
-                      onClick={() => setType("Good")}
+                      onClick={() => setPhysicalCondition("Good")}
                       className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
                     >
                       Good
                     </div>
                     <div
-                      onClick={() => setType("Fair")}
+                      onClick={() => setPhysicalCondition("Fair")}
                       className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
                     >
                       Fair
                     </div>
                     <div
-                      onClick={() => setType("Poor")}
+                      onClick={() => setPhysicalCondition("Poor")}
                       className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
                     >
                       Poor
                     </div>
                     <div
-                      onClick={() => setType("Broken")}
+                      onClick={() => setPhysicalCondition("Broken")}
                       className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300"
                     >
                       Broken
