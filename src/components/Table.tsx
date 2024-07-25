@@ -333,7 +333,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                 size="sm"
                 placement="bottom"
                 inline
-                theme={{ floating: { target: "h-10 w-[100px]" } }}
+                theme={{ floating: { target: "h-10 w-[200px]" } }}
               >
                 {table.getAllLeafColumns().map((column) => {
                   if (column.id === "select" || column.id === "details")

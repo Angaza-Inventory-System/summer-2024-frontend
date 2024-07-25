@@ -18,17 +18,17 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
   const [serialNumber, setSerialNumber] = useState<string>();
   const [macId, setMacId] = useState<string>();
   const [manufacture, setManufacture] = useState<number>();
-  const [shipmentDate, setShipmentDate] = useState<Dayjs>(dayjs());
+
   const [physicalCondition, setPhysicalCondition] = useState<string>();
   const [specifications, setSpecifications] = useState<string>();
   const [operatingSystem, setOperatingSystem] = useState<string>();
-  const [accessories, setAccessories] = useState<string>();
+
   const [donor, setDonor] = useState<number>();
   const [dateOfDonation, setDateOfDonation] = useState<Dayjs>(dayjs());
   const [value, setValue] = useState<string>();
-  const [location, setLocation] = useState<number>();
+  const [warehouse, setWarehouse] = useState<number>();
   const [assignedUser, setAssignedUser] = useState<number>();
-  const [status, setStatus] = useState<string>();
+  
   const [distributor, setDistributor] = useState<string>();
   const [warrantyServiceInfo, setWarrantyServiceInfo] = useState<string>();
   const [notes, setNotes] = useState<string>();
@@ -47,19 +47,15 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
         serial_number: serialNumber,
         mac_id: macId,
         year_of_manufacture: manufacture,
-        shipment_date: shipmentDate.format("YYYY-MM-DD"),
         physical_condition: physicalCondition,
         specifications,
         operating_system: operatingSystem,
-        accessories,
         donor,
         date_of_donation: dateOfDonation.format("YYYY-MM-DD"),
         value,
-        location,
+        warehouse,
         assigned_user: assignedUser,
-        status,
         distributor,
-        warranty_service_info: warrantyServiceInfo,
         notes,
       }),
     };
@@ -109,19 +105,28 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   >
                     Type
                   </label>
-                  <div className="flex flex-col">
-                    <input
-                      onChange={(e) => setType(e.target.value)}
-                      className={`${errors.type ? "border-2 border-red-500" : "border border-gray-300"} rounded p-2`}
-                    />
-                    {errors.type && (
-                      <p className="mt-1 text-sm text-red-500">
-                        {errors.type.map((msg, index) => (
-                          <span key={index}>{msg}</span>
-                        ))}
-                      </p>
-                    )}
-                  </div>
+                    <div className="rounded p-2 border-gray-300 bg-white">
+                      <Dropdown
+                        label={type ? type : ""}
+                        dismissOnClick={false}
+                        placement="bottom"
+                        inline
+                        theme={{ floating: { target: "w-[199px]" } }}
+                      >
+                        <div onClick={() => setType("Computer")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
+                          Computer
+                        </div>
+                        <div onClick={() => setType("Tablet")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
+                          Tablet
+                        </div>
+                        <div onClick={() => setType("Phone")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
+                          Phone
+                        </div>
+                        <div onClick={() => setType("Other")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
+                          Other
+                        </div>
+                      </Dropdown>
+                    </div>
                 </div>
 
                 <div className="mb-6 flex items-center">
@@ -233,20 +238,6 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                     )}
                   </div>
                 </div>
-
-                <div className="mb-6 flex">
-                  <label
-                    htmlFor="shipment date"
-                    className="w-32 font-bold text-[#3aaef1ec]"
-                  >
-                    Shipment Date
-                  </label>
-                  <DateCalendarReferenceDate
-                    selectedDate={shipmentDate}
-                    setSelectedDate={setShipmentDate}
-                  />
-                </div>
-
                 <div className="mb-6 flex items-center">
                   <label
                     htmlFor="physical condition"
@@ -254,19 +245,32 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   >
                     Physical Condition
                   </label>
-                  <div className="flex flex-col">
-                    <input
-                      onChange={(e) => setPhysicalCondition(e.target.value)}
-                      className={`${errors.physical_condition ? "border-2 border-red-500" : "border border-gray-300"} rounded p-2`}
-                    />
-                    {errors.physical_condition && (
-                      <p className="mt-1 text-sm text-red-500">
-                        {errors.physical_condition.map((msg, index) => (
-                          <span key={index}>{msg}</span>
-                        ))}
-                      </p>
-                    )}
-                  </div>
+                  <Dropdown
+                        label={type ? type : ""}
+                        dismissOnClick={false}
+                        placement="bottom"
+                        inline
+                        theme={{ floating: { target: "w-[199px]" } }}
+                      >
+                        <div onClick={() => setType("New")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
+                          New
+                        </div>
+                        <div onClick={() => setType("Excellent")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
+                          Excellent
+                        </div>
+                        <div onClick={() => setType("Good")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
+                          Good
+                        </div>
+                        <div onClick={() => setType("Fair")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
+                          Fair
+                        </div>
+                        <div onClick={() => setType("Poor")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
+                          Poor
+                        </div>
+                        <div onClick={() => setType("Broken")} className="ml-2 text-sm font-medium text-gray-900 hover:bg-slate-200 dark:text-gray-300">
+                          Broken
+                        </div>
+                      </Dropdown>
                 </div>
 
                 <div className="mb-6 flex items-center">
@@ -394,14 +398,14 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
 
                 <div className="mb-6 flex items-center">
                   <label
-                    htmlFor="location"
+                    htmlFor="warehouse"
                     className="w-32 font-bold text-[#3aaef1ec]"
                   >
-                    Location
+                    Warehouse
                   </label>
                   <div className="flex flex-col">
                     <input
-                      onChange={(e) => setLocation(parseInt(e.target.value))}
+                      onChange={(e) => setWarehouse(parseInt(e.target.value))}
                       className={`${errors.received_by ? "border-2 border-red-500" : "border border-gray-300"} rounded p-2`}
                     />
                     {errors.received_by && (
@@ -438,49 +442,6 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
                 </div>
 
-                <div className="mb-6 flex items-center">
-                  <label
-                    htmlFor="status"
-                    className="w-32 font-bold text-[#3aaef1ec]"
-                  >
-                    Status
-                  </label>
-                  <div className="flex flex-col">
-                    <input
-                      onChange={(e) => setStatus(e.target.value)}
-                      className={`${errors.status ? "border-2 border-red-500" : "border border-gray-300"} rounded p-2`}
-                    />
-                    {errors.status && (
-                      <p className="mt-1 text-sm text-red-500">
-                        {errors.status.map((msg, index) => (
-                          <span key={index}>{msg}</span>
-                        ))}
-                      </p>
-                    )}
-                  </div>
-                </div>
-
-                <div className="mb-6 flex items-center">
-                  <label
-                    htmlFor="warranty service info"
-                    className="w-32 font-bold text-[#3aaef1ec]"
-                  >
-                    Warranty Service Info
-                  </label>
-                  <div className="flex flex-col">
-                    <input
-                      onChange={(e) => setWarrantyServiceInfo(e.target.value)}
-                      className={`${errors.warranty_service_info ? "border-2 border-red-500" : "border border-gray-300"} rounded p-2`}
-                    />
-                    {errors.warranty_service_info && (
-                      <p className="mt-1 text-sm text-red-500">
-                        {errors.warranty_service_info.map((msg, index) => (
-                          <span key={index}>{msg}</span>
-                        ))}
-                      </p>
-                    )}
-                  </div>
-                </div>
 
                 <div className="mb-6 flex items-center">
                   <label
@@ -500,6 +461,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                           <span key={index}>{msg}</span>
                         ))}
                       </p>
+                    
                     )}
                   </div>
                 </div>
