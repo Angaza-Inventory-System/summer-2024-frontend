@@ -6,6 +6,7 @@ import bg from "./better_better.png";
 import Cookies from "js-cookie";
 import { Dropdown } from "flowbite-react";
 import { DropdownSelect } from "./DropdownSelect";
+import { FormLabel } from "./FormLabel";
 
 interface Props {
   jsonHeaders: { "Content-Type": string; Authorization: string };
@@ -29,9 +30,9 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
   const [dateOfDonation, setDateOfDonation] = useState<Dayjs>(dayjs());
   const [value, setValue] = useState<string>();
   const [warehouse, setWarehouse] = useState<number>();
-  const [assignedUser, setAssignedUser] = useState<number>();
+  const [receivedBy, setReceivedBy] = useState<number>();
+  const [createdBy, setCreatedBy] = useState<number>();
 
-  const [distributor, setDistributor] = useState<string>();
   const [notes, setNotes] = useState<string>();
   const [errors, setErrors] = useState<{ [key: string]: string[] }>({});
 
@@ -54,8 +55,8 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
         date_of_donation: dateOfDonation.format("YYYY-MM-DD"),
         value,
         warehouse,
-        assigned_user: assignedUser,
-        distributor,
+        createdBy,
+        receivedBy,
         notes,
       }),
     };
@@ -95,12 +96,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
               <form className="mx-auto w-full max-w-sm" onSubmit={add}>
                 <div className="flex flex-col space-y-4">
                   <div className="flex items-center">
-                    <label
-                      htmlFor="type"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Type
-                    </label>
+                    <FormLabel text="Type" />
                     <Dropdown
                       label={type ? type : ""}
                       dismissOnClick={false}
@@ -127,12 +123,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="make"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Make
-                    </label>
+                    <FormLabel text="Make" />
                     <div className="flex flex-col">
                       <input
                         onChange={(e) => setMake(e.target.value)}
@@ -149,12 +140,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="model"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Model
-                    </label>
+                    <FormLabel text="Model" />
                     <div className="flex flex-col">
                       <input
                         onChange={(e) => setModel(e.target.value)}
@@ -171,12 +157,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="serial number"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Serial Number
-                    </label>
+                    <FormLabel text="Serial Number" />
                     <div className="flex flex-col">
                       <input
                         onChange={(e) => setSerialNumber(e.target.value)}
@@ -193,12 +174,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="mac ID"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Mac ID
-                    </label>
+                    <FormLabel text="Mac ID" />
                     <div className="flex flex-col">
                       <input
                         onChange={(e) => setMacId(e.target.value)}
@@ -215,12 +191,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="year of manufacture"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Year of Manufacture
-                    </label>
+                    <FormLabel text="Year of Manufacture" />
                     <div className="flex flex-col">
                       <input
                         onChange={(e) =>
@@ -238,12 +209,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                     </div>
                   </div>
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="physical condition"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Physical Condition
-                    </label>
+                    <FormLabel text="Physical Condition" />
                     <Dropdown
                       label={physicalCondition ? physicalCondition : ""}
                       dismissOnClick={false}
@@ -290,12 +256,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="specifications"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Specifications
-                    </label>
+                    <FormLabel text="Specifications" />
                     <div className="flex flex-col">
                       <input
                         onChange={(e) => setSpecifications(e.target.value)}
@@ -312,12 +273,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="operating system"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Operating System
-                    </label>
+                    <FormLabel text="Operating System" />
                     <Dropdown
                       label={operatingSystem ? operatingSystem : ""}
                       dismissOnClick={false}
@@ -360,12 +316,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="donor"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Donor
-                    </label>
+                    <FormLabel text="Donor" />
                     <div className="flex flex-col">
                       <input
                         onChange={(e) => setDonor(parseInt(e.target.value))}
@@ -382,12 +333,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex">
-                    <label
-                      htmlFor="date of donation"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Date Of Donation
-                    </label>
+                    <FormLabel text="Date of Donation" />
                     <DateCalendarReferenceDate
                       selectedDate={dateOfDonation}
                       setSelectedDate={setDateOfDonation}
@@ -395,12 +341,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="value"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Value
-                    </label>
+                    <FormLabel text="Value" />
                     <div className="flex flex-col">
                       <input
                         onChange={(e) => setValue(e.target.value)}
@@ -417,12 +358,7 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="warehouse"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Warehouse
-                    </label>
+                    <FormLabel text="Warehouse" />
                     <div className="flex flex-col">
                       <input
                         onChange={(e) => setWarehouse(parseInt(e.target.value))}
@@ -439,16 +375,11 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="assigned user"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Assigned User
-                    </label>
+                    <FormLabel text="Received By" />
                     <div className="flex flex-col">
                       <input
                         onChange={(e) =>
-                          setAssignedUser(parseInt(e.target.value))
+                          setReceivedBy(parseInt(e.target.value))
                         }
                         className={`${errors.assigned_user ? "border-2 border-red-500" : "border border-gray-500 bg-gray-500 text-white"} rounded p-2`}
                       />
@@ -463,12 +394,24 @@ const DeviceForm = ({ jsonHeaders, backUrl }: Props) => {
                   </div>
 
                   <div className="mb-6 flex items-center">
-                    <label
-                      htmlFor="notes"
-                      className="w-32 text-sm font-bold text-[#3aaef1ec] dark:text-gray-500"
-                    >
-                      Notes
-                    </label>
+                    <FormLabel text="Created By" />
+                    <div className="flex flex-col">
+                      <input
+                        onChange={(e) => setCreatedBy(parseInt(e.target.value))}
+                        className={`${errors.assigned_user ? "border-2 border-red-500" : "border border-gray-500 bg-gray-500 text-white"} rounded p-2`}
+                      />
+                      {errors.assigned_user && (
+                        <p className="mt-1 text-sm text-red-500">
+                          {errors.assigned_user.map((msg, index) => (
+                            <span key={index}>{msg}</span>
+                          ))}
+                        </p>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="mb-6 flex items-center">
+                    <FormLabel text="Notes" />
                     <div className="flex flex-col">
                       <input
                         onChange={(e) => setNotes(e.target.value)}

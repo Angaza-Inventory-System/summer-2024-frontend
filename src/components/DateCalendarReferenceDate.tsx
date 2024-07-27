@@ -7,13 +7,11 @@ import { styled } from "@mui/system";
 import { TextField } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
 
-const CustomTextField = styled(TextField)({
-  width: "196.72px", // Set the desired width
+const CustomTextField = styled(TextField)(({ theme }) => ({
+  width: "196.72px",
   "& .MuiOutlinedInput-root": {
     padding: "0.5rem",
-    backgroundColor: document.documentElement.classList.contains("dark")
-      ? "#6B7280"
-      : "#ffffff",
+    backgroundColor: theme.palette.mode === "dark" ? "#6B7280" : "#ffffff",
     "&.Mui-focused": {
       borderColor: "#3182CE",
     },
@@ -23,14 +21,12 @@ const CustomTextField = styled(TextField)({
   },
   "& .MuiInputBase-input": {
     padding: "0.5rem",
-    backgroundColor: document.documentElement.classList.contains("dark")
-      ? "#6B7280"
-      : "#ffffff",
+    backgroundColor: theme.palette.mode === "dark" ? "#6B7280" : "#ffffff",
   },
   "& .MuiInputLabel-root": {
     top: "-5px",
   },
-});
+}));
 
 const darkTheme = createTheme({
   palette: {
@@ -42,6 +38,7 @@ interface Props {
   selectedDate: Dayjs;
   setSelectedDate: Dispatch<SetStateAction<Dayjs>>;
 }
+
 const DateCalendarReferenceDate = ({
   selectedDate,
   setSelectedDate,
@@ -49,7 +46,6 @@ const DateCalendarReferenceDate = ({
   const handleDateChange = (newDate: Dayjs | null) => {
     if (newDate !== null) setSelectedDate(newDate);
   };
-  document.documentElement.classList.add("dark");
 
   return (
     <ThemeProvider theme={darkTheme}>
@@ -68,4 +64,5 @@ const DateCalendarReferenceDate = ({
     </ThemeProvider>
   );
 };
+
 export default DateCalendarReferenceDate;
