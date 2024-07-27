@@ -34,31 +34,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
   const columnHelper = createColumnHelper<Device>();
   const [columnVisibility, setColumnVisibility] = useState<
     Record<string, boolean>
-  >({
-    device_id: true,
-    type: true,
-    make: true,
-    model: true,
-    serial_number: true,
-    mac_id: false,
-    year_of_manufacture: false,
-    shipment_date: true,
-    date_received: true,
-    physical_condition: true,
-    specifications: false,
-    operating_system: true,
-    accessories: false,
-    date_of_donation: false,
-    value: true,
-    status: true,
-    distributor: false,
-    warranty_service_info: false,
-    notes: true,
-    received_by: false,
-    donor: false,
-    location: false,
-    assigned_user: false,
-  });
+  >({});
   const colDef = [
     columnHelper.accessor("select", {
       size: 10,
@@ -117,11 +93,6 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
       header: "Year Of Manufacture",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("shipment_date", {
-      minSize: 200,
-      header: "Shipment Date",
-      cell: (info) => info.getValue(),
-    }),
     columnHelper.accessor("date_received", {
       minSize: 200,
       header: "Date Received",
@@ -142,11 +113,6 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
       header: "Operation System",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("accessories", {
-      minSize: 200,
-      header: "Accessories",
-      cell: (info) => info.getValue(),
-    }),
     columnHelper.accessor("date_of_donation", {
       minSize: 200,
       header: "Date Of Donation",
@@ -157,19 +123,9 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
       header: "Value",
       cell: (info) => info.getValue(),
     }),
-    columnHelper.accessor("status", {
-      minSize: 200,
-      header: "Status",
-      cell: (info) => info.getValue(),
-    }),
     columnHelper.accessor("distributor", {
       minSize: 200,
       header: "Distributor",
-      cell: (info) => info.getValue(),
-    }),
-    columnHelper.accessor("warranty_service_info", {
-      minSize: 200,
-      header: "Warranty Service Info",
       cell: (info) => info.getValue(),
     }),
     columnHelper.accessor("notes", {
@@ -305,7 +261,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
       <div className="fixed hidden print:block">
         <QRGrid frontUrl={frontUrl} qrCodes={Object.keys(rowSelection)} />
       </div>
-      <div className="absolute h-screen w-screen bg-black bg-opacity-70 p-2 print:hidden">
+      <div className="absolute h-screen w-screen bg-black bg-opacity-0 p-2 dark:bg-opacity-70 print:hidden">
         {showPopup && (
           <Details
             backUrl={backUrl}
@@ -341,7 +297,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                   return (
                     <div
                       key={column.id}
-                      className="flex items-center hover:bg-slate-200"
+                      className="flex items-center hover:bg-slate-200/20"
                     >
                       <label className="flex items-center">
                         <input
@@ -376,7 +332,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
                     return (
                       <div
                         key={column.id}
-                        className="flex items-center hover:bg-slate-200"
+                        className="flex items-center hover:bg-slate-200/20"
                       >
                         <label className="flex items-center">
                           <input
