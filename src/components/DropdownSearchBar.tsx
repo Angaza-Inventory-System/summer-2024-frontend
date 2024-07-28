@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 
 interface Option {
   [key: string]: string;
@@ -17,9 +17,9 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
   label,
   id,
   selectedVal,
-  handleChange
+  handleChange,
 }) => {
-  const [query, setQuery] = useState<string>('');
+  const [query, setQuery] = useState<string>("");
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -30,13 +30,13 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
         setIsOpen(false);
       }
     };
-    
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const selectOption = (option: Option) => {
-    setQuery('');
+    setQuery("");
     handleChange(option[label]);
     setIsOpen(false);
   };
@@ -44,12 +44,12 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
   const getDisplayValue = () => {
     if (query) return query;
     if (selectedVal) return selectedVal;
-    return '';
+    return "";
   };
 
   const filterOptions = (options: Option[]) => {
-    return options.filter(
-      (option) => option[label].toLowerCase().includes(query.toLowerCase())
+    return options.filter((option) =>
+      option[label].toLowerCase().includes(query.toLowerCase()),
     );
   };
 
@@ -73,7 +73,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
-            className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
@@ -91,7 +91,7 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
             <div
               key={`${id}-${index}`}
               onClick={() => selectOption(option)}
-              className={`p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 ${option[label] === selectedVal ? 'bg-gray-300 dark:bg-gray-600' : ''}`}
+              className={`p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 ${option[label] === selectedVal ? "bg-gray-300 dark:bg-gray-600" : ""}`}
             >
               {option[label]}
             </div>
@@ -103,4 +103,3 @@ const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
 };
 
 export default SearchableDropdown;
-
