@@ -1,107 +1,106 @@
-import React, { useState, useRef } from "react";
-import { HiOutlineSearch, HiOutlineChevronDown } from "react-icons/hi"; // Example: Icons for search and dropdown
-import clsx from "clsx";
+import React, { useEffect, useRef, useState } from 'react';
 
 interface Option {
-  value: string;
-  label: string;
+  [key: string]: string;
 }
 
 interface SearchableDropdownProps {
   options: Option[];
-  onSelect: (value: string) => void;
-  placeholder?: string;
+  label: string;
+  id: string;
+  selectedVal: string | undefined;
+  handleChange: (value: string | null) => void;
 }
 
-const DropdownSearchBar: React.FC<SearchableDropdownProps> = ({
+const SearchableDropdown: React.FC<SearchableDropdownProps> = ({
   options,
-  onSelect,
-  placeholder = "Select an option...",
+  label,
+  id,
+  selectedVal,
+  handleChange
 }) => {
-  const [isOpen, setIsOpen] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [query, setQuery] = useState<string>('');
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  // Close dropdown when clicking outside
-  const handleClickOutside = (event: MouseEvent) => {
-    if (
-      dropdownRef.current &&
-      !dropdownRef.current.contains(event.target as Node)
-    ) {
-      setIsOpen(false);
-    }
-  };
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  // Filter options based on search term
-  const filteredOptions = options.filter((option) =>
-    option.label.toLowerCase().includes(searchTerm.toLowerCase()),
-  );
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (inputRef.current && !inputRef.current.contains(e.target as Node)) {
+        setIsOpen(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
-  // Handle selection
-  const handleSelect = (value: string) => {
-    onSelect(value);
+  const selectOption = (option: Option) => {
+    setQuery('');
+    handleChange(option[label]);
     setIsOpen(false);
   };
 
-  // Toggle dropdown visibility
-  const toggleDropdown = () => {
-    setIsOpen(!isOpen);
-    setSearchTerm(""); // Clear search term when opening dropdown
+  const getDisplayValue = () => {
+    if (query) return query;
+    if (selectedVal) return selectedVal;
+    return '';
   };
 
-  // Handle key press events for accessibility
-  const handleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => {
-    if (event.key === "Enter") {
-      toggleDropdown();
-    }
+  const filterOptions = (options: Option[]) => {
+    return options.filter(
+      (option) => option[label].toLowerCase().includes(query.toLowerCase())
+    );
   };
 
   return (
-    <div className="relative" ref={dropdownRef}>
-      <button
-        type="button"
-        onClick={toggleDropdown}
-        onKeyPress={handleKeyPress}
-        className="flex items-center justify-between w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-      >
-        <span className="truncate">{placeholder}</span>
-        <HiOutlineChevronDown className="w-5 h-5 text-gray-700" />
-      </button>
-
+    <div className="relative">
+      <div className="flex items-center border border-gray-300 dark:border-gray-700 rounded">
+        <input
+          ref={inputRef}
+          type="text"
+          value={getDisplayValue()}
+          onChange={(e) => {
+            setQuery(e.target.value);
+            handleChange(null);
+          }}
+          onClick={() => setIsOpen(!isOpen)}
+          className="w-full p-2 bg-gray-200 dark:bg-gray-800 text-gray-900 dark:text-gray-100 rounded-l outline-none"
+        />
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="p-2 bg-gray-300 dark:bg-gray-700 rounded-r"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+          >
+            <path d="M19 9l-7 7-7-7" />
+          </svg>
+        </button>
+      </div>
       {isOpen && (
-        <div className="absolute z-10 w-full mt-2 bg-white border border-gray-300 rounded-md shadow-lg">
-          <div className="flex items-center px-4 py-2 border-b border-gray-200">
-            <HiOutlineSearch className="w-5 h-5 mr-2 text-gray-500" />
-            <input
-              type="text"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              placeholder="Search..."
-              className="w-full border-none focus:outline-none"
-            />
-          </div>
-          <div className="py-1">
-            {filteredOptions.length > 0 ? (
-              filteredOptions.map((option) => (
-                <div
-                  key={option.value}
-                  onClick={() => handleSelect(option.value)}
-                  className={clsx(
-                    "px-4 py-2 cursor-pointer hover:bg-gray-100",
-                    option.value === searchTerm && "bg-gray-100",
-                  )}
-                >
-                  {option.label}
-                </div>
-              ))
-            ) : (
-              <div className="px-4 py-2 text-gray-500">No options found</div>
-            )}
-          </div>
+        <div className="absolute z-10 mt-1 w-full border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 rounded shadow-lg">
+          {filterOptions(options).map((option, index) => (
+            <div
+              key={`${id}-${index}`}
+              onClick={() => selectOption(option)}
+              className={`p-2 cursor-pointer hover:bg-gray-200 dark:hover:bg-gray-700 ${option[label] === selectedVal ? 'bg-gray-300 dark:bg-gray-600' : ''}`}
+            >
+              {option[label]}
+            </div>
+          ))}
         </div>
       )}
     </div>
   );
 };
 
-export default DropdownSearchBar;
+export default SearchableDropdown;
+
