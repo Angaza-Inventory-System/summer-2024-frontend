@@ -271,7 +271,7 @@ function Table({ backUrl, jsonHeaders, frontUrl }: Props) {
             frontUrl={frontUrl}
           />
         )}
-        <div className="grid w-full grid-cols-2 pt-10">
+        <div className="grid w-full grid-cols-2 pt-5">
           <div className="flex h-full">
             <div className="pr-2">
               <button
